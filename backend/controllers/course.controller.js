@@ -11,6 +11,8 @@ import {
     errorResponse,
 } from "../utils/apiResponse.js";
 
+import  { generateCurriculum } from "../services/ai/curriculum.service.js"
+
 export const create = async (req, res) => {
     try {
         const course = await createCourse(req.body, req.user.id);
@@ -88,5 +90,26 @@ export const remove = async (req, res) => {
         );
     } catch (error) {
         return errorResponse(res, error.message);
+    }
+};
+
+export const generateCourse = async (req, res) => {
+    try {
+
+        const curriculum = await generateCurriculum(req.body);
+
+        return successResponse(
+            res,
+            "Curriculum generated successfully.",
+            curriculum
+        );
+
+    } catch (error) {
+
+        return errorResponse(
+            res,
+            error.message
+        );
+
     }
 };

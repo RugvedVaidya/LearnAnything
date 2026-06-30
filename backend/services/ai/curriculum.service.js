@@ -1,26 +1,29 @@
-import { curriculumPrompt } from "../../prompts/curriculum.prompt.js";
+import { curriculumPrompt } from "../../prompts/curriculum/curriculum.prompt.js";
+import { callOpenRouter } from "./openrouter.service.js";
 import { safeJsonParse } from "../../utils/safeJson.js";
-import { generateAIResponse } from "./ai.service.js";
 
 export const generateCurriculum = async ({
     topic,
-    level,
+    currentKnowledge,
     goal,
 }) => {
 
     const prompt = curriculumPrompt({
         topic,
-        level,
+        currentKnowledge,
         goal,
     });
 
-    const response = await generateAIResponse([
-        {
-            role: "user",
-            content: prompt,
-        },
-    ]);
+    const response = await callOpenRouter([
+    {
+        role: "user",
+        content: prompt,
+    },
+]);
 
-    return safeJsonParse(response);;
+console.log("========== AI RAW RESPONSE ==========");
+console.log(response);
+console.log("=====================================");
 
+return safeJsonParse(response);
 };
