@@ -12,6 +12,18 @@ enum UserRole {
   ADMIN
 }
 
+enum Difficulty {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum CourseStatus {
+  GENERATING
+  READY
+  FAILED
+}
+
 model User {
   id String @id @default(cuid())
 
@@ -34,23 +46,26 @@ model User {
 }
 
 model Course {
-  id String @id @default(cuid())
 
-  title String
+  id               String   @id @default(cuid())
 
-  description String?
+  title            String
 
-  difficulty String
+  description      String?
 
-  estimatedHours Int
+  difficulty       Difficulty
 
-  createdAt DateTime @default(now())
+  estimatedHours   Int
 
-  userId String
+  status           CourseStatus @default(GENERATING)
 
-  user User @relation(fields: [userId], references: [id])
+  createdAt        DateTime @default(now())
 
-  modules Module[]
+  userId           String
+
+  user             User @relation(fields: [userId], references: [id])
+
+  modules          Module[]
 }
 
 model Module {
@@ -118,3 +133,5 @@ model UserPreference {
 
   user User @relation(fields: [userId], references: [id])
 }
+
+
