@@ -1,4 +1,4 @@
-import { loginUser, registerUser } from "../services/auth.service.js";
+import { loginUser, registerUser, getCurrentUser } from "../services/auth.service.js";
 import { successResponse, errorResponse } from "../utils/apiResponse.js";
 
 export const register = async (req, res) => {
@@ -47,4 +47,27 @@ export const login = async (req, res) => {
         );
 
     }
+};
+
+export const me = async (req, res) => {
+
+    try {
+
+        const user = await getCurrentUser(req.user.id);
+
+        return successResponse(
+            res,
+            "Current user fetched successfully.",
+            user
+        );
+
+    } catch (error) {
+
+        return errorResponse(
+            res,
+            error.message
+        );
+
+    }
+
 };

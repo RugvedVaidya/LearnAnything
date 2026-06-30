@@ -6,13 +6,13 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
 enum UserRole {
   USER
   ADMIN
 }
 
 model User {
-
   id String @id @default(cuid())
 
   name String
@@ -29,95 +29,92 @@ model User {
 
   updatedAt DateTime @updatedAt
 
-  courses Course[]
+  courses        Course[]
+  userPreference UserPreference?
 }
 
 model Course {
-  id              String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  title           String
+  title String
 
-  description     String?
+  description String?
 
-  difficulty      String
+  difficulty String
 
-  estimatedHours  Int
+  estimatedHours Int
 
-  createdAt       DateTime @default(now())
+  createdAt DateTime @default(now())
 
-  userId          String
+  userId String
 
-  user            User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
-  modules         Module[]
+  modules Module[]
 }
 
 model Module {
+  id String @id @default(cuid())
 
-  id              String @id @default(cuid())
+  title String
 
-  title           String
+  description String?
 
-  description     String?
+  order Int
 
-  order           Int
+  estimatedTime Int
 
-  estimatedTime   Int
+  courseId String
 
-  courseId        String
+  course Course @relation(fields: [courseId], references: [id])
 
-  course          Course @relation(fields: [courseId], references: [id])
-
-  chapters        Chapter[]
+  chapters Chapter[]
 }
 
 model Chapter {
+  id String @id @default(cuid())
 
-  id              String @id @default(cuid())
+  title String
 
-  title           String
+  description String?
 
-  description     String?
+  order Int
 
-  order           Int
+  moduleId String
 
-  moduleId         String
+  module Module @relation(fields: [moduleId], references: [id])
 
-  module           Module @relation(fields: [moduleId], references: [id])
-
-  lessons         Lesson[]
+  lessons Lesson[]
 }
 
 model Lesson {
+  id String @id @default(cuid())
 
-  id              String @id @default(cuid())
+  title String
 
-  title           String
+  summary String?
 
-  summary         String?
+  difficulty String
 
-  difficulty      String
+  readingTime Int
 
-  readingTime     Int
+  order Int
 
-  order           Int
+  chapterId String
 
-  chapterId       String
-
-  chapter         Chapter @relation(fields: [chapterId], references: [id])
+  chapter Chapter @relation(fields: [chapterId], references: [id])
 }
 
-
 model UserPreference {
-  id        String   @id @default(cuid())
+  id String @id @default(cuid())
 
-  theme     String   @default("dark")
+  theme String @default("dark")
 
-  language  String   @default("en")
+  language String @default("en")
 
-  timezone  String?
+  timezone String?
 
-  userId    String   @unique
+  userId String @unique
 
-  user      User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 }
