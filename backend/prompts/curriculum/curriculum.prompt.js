@@ -1,36 +1,54 @@
 export const curriculumPrompt = ({
     topic,
-    level,
+    currentKnowledge,
     goal,
 }) => `
-You are an expert curriculum designer.
+You are an expert curriculum designer and educator.
 
-Generate a complete learning roadmap.
+Generate a complete, well-structured learning roadmap.
 
 Topic:
 ${topic}
 
 Current Knowledge:
-${level}
+${currentKnowledge}
 
 Learning Goal:
 ${goal}
 
 Return ONLY valid JSON.
 
-The JSON format must be:
+The response MUST follow this schema exactly:
 
 {
-"title":"",
-"description":"",
-"estimatedHours":0,
-"difficulty":"BEGINNER",
-"modules":[]
+  "title": "",
+  "description": "",
+  "estimatedHours": 0,
+  "difficulty": "BEGINNER | INTERMEDIATE | ADVANCED",
+  "modules": [
+    {
+      "title": "",
+      "description": "",
+      "chapters": [
+        {
+          "title": "",
+          "lessons": [
+            {
+              "title": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
 }
 
-Do not include markdown.
-
-Do not include explanations.
-
-Only JSON.
+Rules:
+- No markdown.
+- No explanations.
+- No code fences.
+- Return valid JSON only.
+- Modules should be ordered from fundamentals to advanced topics.
+- Lessons should build upon previous lessons.
+- The curriculum should match the learner's current knowledge and learning goal.
 `;
