@@ -6,13 +6,16 @@ import {
     deleteCourse,
 } from "../services/course.service.js";
 
+import { generateCourse as generateCourseService } from "../services/generateCourse.service.js";
+
 import {
     successResponse,
     errorResponse,
 } from "../utils/apiResponse.js";
 
-import  { generateCurriculum } from "../services/ai/curriculum.service.js"
-
+/**
+ * Create Course (Manual - Internal)
+ */
 export const create = async (req, res) => {
     try {
         const course = await createCourse(req.body, req.user.id);
@@ -24,10 +27,44 @@ export const create = async (req, res) => {
             201
         );
     } catch (error) {
-        return errorResponse(res, error.message);
+        return errorResponse(
+            res,
+            error.message,
+            [],
+            500
+        );
     }
 };
 
+/**
+ * AI Generate Course
+ */
+export const generateCourse = async (req, res) => {
+    try {
+        const course = await generateCourseService(
+            req.body,
+            req.user.id
+        );
+
+        return successResponse(
+            res,
+            "Course generated successfully.",
+            course,
+            201
+        );
+    } catch (error) {
+        return errorResponse(
+            res,
+            error.message,
+            [],
+            500
+        );
+    }
+};
+
+/**
+ * Get All Courses
+ */
 export const getAll = async (req, res) => {
     try {
         const courses = await getCourses(req.user.id);
@@ -38,10 +75,18 @@ export const getAll = async (req, res) => {
             courses
         );
     } catch (error) {
-        return errorResponse(res, error.message);
+        return errorResponse(
+            res,
+            error.message,
+            [],
+            500
+        );
     }
 };
 
+/**
+ * Get Course By ID
+ */
 export const getById = async (req, res) => {
     try {
         const course = await getCourseById(
@@ -55,10 +100,18 @@ export const getById = async (req, res) => {
             course
         );
     } catch (error) {
-        return errorResponse(res, error.message, [], 404);
+        return errorResponse(
+            res,
+            error.message,
+            [],
+            404
+        );
     }
 };
 
+/**
+ * Update Course
+ */
 export const update = async (req, res) => {
     try {
         const course = await updateCourse(
@@ -73,43 +126,35 @@ export const update = async (req, res) => {
             course
         );
     } catch (error) {
-        return errorResponse(res, error.message);
+        return errorResponse(
+            res,
+            error.message,
+            [],
+            500
+        );
     }
 };
 
+/**
+ * Delete Course
+ */
 export const remove = async (req, res) => {
     try {
-        const response = await deleteCourse(
+        const result = await deleteCourse(
             req.params.id,
             req.user.id
         );
 
         return successResponse(
             res,
-            response.message
+            result.message
         );
     } catch (error) {
-        return errorResponse(res, error.message);
-    }
-};
-
-export const generateCourse = async (req, res) => {
-    try {
-
-        const curriculum = await generateCurriculum(req.body);
-
-        return successResponse(
-            res,
-            "Curriculum generated successfully.",
-            curriculum
-        );
-
-    } catch (error) {
-
         return errorResponse(
             res,
-            error.message
+            error.message,
+            [],
+            500
         );
-
     }
 };
