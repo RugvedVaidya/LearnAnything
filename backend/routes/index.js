@@ -1,12 +1,15 @@
 import express from "express";
+import authRoutes from "./auth.routes.js";
 
 const router = express.Router();
 
 router.get("/health", (req, res) => {
-    res.status(200).json({
+    res.json({
         success: true,
-        message: "LearnAnything AI Backend is running 🚀",
+        message: "Backend running 🚀",
     });
 });
+
+router.use("/auth", authRoutes);
 
 export default router;
