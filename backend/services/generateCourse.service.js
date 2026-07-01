@@ -3,35 +3,37 @@ import { generateCurriculum } from "./ai/curriculum.service.js";
 
 export const generateCourse = async (input, userId) => {
 
+    // 1. Ask AI for curriculum
     const curriculum = await generateCurriculum(input);
 
-    return await prisma.$transaction(async (tx) => {
+    // 2. Save everything atomically
+    const course = await prisma.$transaction(async (tx) => {
 
-        const course = await tx.course.create({
+        // Create Course
+        const createdCourse = await tx.course.create({
             data: {
                 title: curriculum.title,
                 description: curriculum.description,
                 difficulty: curriculum.difficulty,
                 estimatedHours: curriculum.estimatedHours,
+                status: "READY",
                 userId,
             },
         });
 
-        for (const module of curriculum.modules) {
+        // Create Modules
+        await tx.module.createMany({
+            data: curriculum.modules.map((module) => ({
+                title: module.title,
+                description: module.description,
+                order: module.order,
+                estimatedTime: module.estimatedTime,
+                courseId: createdCourse.id,
+            })),
+        });
 
-            await tx.module.create({
-                data: {
-                    title: module.title,
-                    description: module.description,
-                    order: module.order,
-                    courseId: course.id,
-                },
-            });
-
-        }
-
-        return course;
-
+        return createdCourse;
     });
 
+    return course;
 };

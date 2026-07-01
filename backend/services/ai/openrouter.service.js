@@ -13,7 +13,7 @@ export const callOpenRouter = async (messages) => {
         const response = await openRouter.post("/chat/completions", {
             model: process.env.OPENROUTER_MODEL,
             messages,
-            max_tokens: 2500,
+            max_tokens: 700,
             temperature: 0.3,
             response_format: {
                 type: "json_object",

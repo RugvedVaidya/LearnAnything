@@ -21,9 +21,10 @@ export const generateCurriculum = async ({
     },
 ]);
 
-console.log("========== AI RAW RESPONSE ==========");
+console.log("========== AI RESPONSE ==========");
+console.log("TYPE:", typeof response);
 console.log(response);
-console.log("=====================================");
+console.log("================================");
 
 return safeJsonParse(response);
 };

@@ -29,7 +29,8 @@ The response MUST exactly follow this schema:
     {
       "order": 1,
       "title": "",
-      "description": ""
+      "description": "",
+      "estimatedTime": 0
     }
   ]
 }
@@ -41,7 +42,12 @@ Rules:
 - Do NOT use code fences.
 - Do NOT generate chapters.
 - Do NOT generate lessons.
-- Generate between 6 and 10 modules.
+- Generate exactly 5 modules.
+- Each module description must be under 20 words.
+- Keep the entire response concise.
 - Modules must be ordered logically.
 - Description should be concise.
+- Every module MUST include estimatedTime.
+- estimatedTime is the number of hours required to complete that module.
+- The sum of all module estimatedTime values should approximately equal estimatedHours.
 `;
