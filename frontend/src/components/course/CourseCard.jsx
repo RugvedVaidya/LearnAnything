@@ -1,10 +1,20 @@
 import { BookOpen, Clock, Layers } from "lucide-react";
+import {useNavigate} from "react-router-dom";
 
 export default function CourseCard({ course }) {
 
+    const navigate = useNavigate();
+
+    const handleCourseClick = () => {
+        navigate(`/courses/${course.id}`);
+    };
+
     return (
 
-        <div className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500 transition cursor-pointer">
+        <div
+    onClick={() => navigate(`/courses/${course.id}`)}
+    className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500 transition cursor-pointer"
+>
 
             <h2 className="text-2xl font-bold text-white">
 
