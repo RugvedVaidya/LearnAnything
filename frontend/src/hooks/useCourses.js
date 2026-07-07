@@ -11,14 +11,23 @@ export default function useCourses() {
     }, []);
 
     const loadCourses = async () => {
+
         try {
+
             const response = await fetchCourses();
+
             setCourses(response.data);
+
         } catch (error) {
+
             console.error(error);
+
         } finally {
+
             setLoading(false);
+
         }
+
     };
 
     return {
