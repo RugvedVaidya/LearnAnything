@@ -1,12 +1,31 @@
+import { useState } from "react";
+
 import Sidebar from "../components/layout/Sidebar";
 import Navbar from "../components/layout/Navbar";
 import Loader from "../components/common/Loader";
 import CourseCard from "../components/course/CourseCard";
+import GenerateCourseModal from "../components/course/GenerateCourseModal";
+
 import useCourses from "../hooks/useCourses";
 
 export default function Dashboard() {
 
-    const { courses, loading } = useCourses();
+    const [open, setOpen] = useState(false);
+
+    const {
+        courses,
+        loading,
+        generate,
+        generating,
+    } = useCourses();
+
+    const handleGenerate = async (data) => {
+
+        await generate(data);
+
+        setOpen(false);
+
+    };
 
     return (
 
@@ -16,29 +35,61 @@ export default function Dashboard() {
 
             <div className="flex-1 flex flex-col">
 
-                <Navbar />
+                <Navbar
+                    onGenerate={() => setOpen(true)}
+                />
 
                 <main className="flex-1 overflow-auto p-8">
 
-                    <h1 className="text-4xl font-bold text-white">
+                    <div className="flex items-center justify-between">
 
-                        My Courses
+                        <div>
 
-                    </h1>
+                            <h1 className="text-4xl font-bold text-white">
 
-                    <p className="text-slate-400 mt-2">
+                                My Courses
 
-                        Continue your learning journey.
+                            </h1>
 
-                    </p>
+                            <p className="text-slate-400 mt-2">
+
+                                Continue your learning journey.
+
+                            </p>
+
+                        </div>
+
+                    </div>
 
                     {loading ? (
 
                         <Loader />
 
+                    ) : courses.length === 0 ? (
+
+                        <div className="flex justify-center items-center h-96">
+
+                            <div className="text-center">
+
+                                <h2 className="text-2xl text-white font-semibold">
+
+                                    No Courses Yet
+
+                                </h2>
+
+                                <p className="text-slate-400 mt-2">
+
+                                    Click "Generate Course" to create your first AI roadmap.
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
                     ) : (
 
-                        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
 
                             {courses.map((course) => (
 
@@ -56,6 +107,13 @@ export default function Dashboard() {
                 </main>
 
             </div>
+
+            <GenerateCourseModal
+                open={open}
+                loading={generating}
+                onClose={() => setOpen(false)}
+                onGenerate={handleGenerate}
+            />
 
         </div>
 

@@ -13,6 +13,11 @@ export const AuthProvider = ({ children }) => {
         initialize();
     }, []);
 
+    const logout = () => {
+        removeToken();
+        setUser(null);
+    };
+
     const initialize = async () => {
 
         try {
@@ -54,6 +59,7 @@ export const AuthProvider = ({ children }) => {
                 user,
                 setUser,
                 loading,
+                logout,
             }}
         >
             {children}
