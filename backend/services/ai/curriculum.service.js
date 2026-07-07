@@ -1,5 +1,5 @@
 import { curriculumPrompt } from "../../prompts/curriculum/curriculum.prompt.js";
-import { callOpenRouter } from "./openrouter.service.js";
+import { callLLM } from "./llm.service.js";
 import { safeJsonParse } from "../../utils/safeJson.js";
 
 export const generateCurriculum = async ({
@@ -14,17 +14,12 @@ export const generateCurriculum = async ({
         goal,
     });
 
-    const response = await callOpenRouter([
-    {
-        role: "user",
-        content: prompt,
-    },
-]);
+    const response = await callLLM(prompt);
 
-console.log("========== AI RESPONSE ==========");
-console.log("TYPE:", typeof response);
-console.log(response);
-console.log("================================");
+    console.log("========== AI RESPONSE ==========");
+    console.log("TYPE:", typeof response);
+    console.log(response);
+    console.log("================================");
 
-return safeJsonParse(response);
+    return safeJsonParse(response);
 };
