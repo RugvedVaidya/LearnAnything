@@ -15,6 +15,7 @@ export default function CourseDetails() {
         course,
         loading,
         generateChapters,
+        generateLessons,
     } = useCourse(courseId);
 
     if (loading) {
@@ -137,6 +138,7 @@ export default function CourseDetails() {
                                             key={module.id}
                                             module={module}
                                             onGenerate = {generateChapters}
+                                            onGenerateLessons = {generateLessons}
                                         />
 
                                     ))

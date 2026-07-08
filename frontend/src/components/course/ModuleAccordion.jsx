@@ -8,17 +8,20 @@ import {
 export default function ModuleAccordion({
     module,
     onGenerate,
+    onGenerateLessons,
 }) {
 
     const [open, setOpen] = useState(false);
 
-    const [loading, setLoading] = useState(false);
+    const [loadingModule, setLoadingModule] = useState(false);
 
-    const handleGenerate = async () => {
+    const [loadingChapter, setLoadingChapter] = useState(null);
+
+    const handleGenerateModule = async () => {
 
         try {
 
-            setLoading(true);
+            setLoadingModule(true);
 
             await onGenerate(module.id);
 
@@ -26,7 +29,23 @@ export default function ModuleAccordion({
 
         } finally {
 
-            setLoading(false);
+            setLoadingModule(false);
+
+        }
+
+    };
+
+    const handleGenerateLessons = async (chapterId) => {
+
+        try {
+
+            setLoadingChapter(chapterId);
+
+            await onGenerateLessons(chapterId);
+
+        } finally {
+
+            setLoadingChapter(null);
 
         }
 
@@ -43,7 +62,7 @@ export default function ModuleAccordion({
 
                 <div className="text-left">
 
-                    <h3 className="text-xl text-white font-semibold">
+                    <h3 className="text-xl font-semibold text-white">
 
                         {module.order}. {module.title}
 
@@ -67,11 +86,10 @@ export default function ModuleAccordion({
 
                     </div>
 
-                    {open ? (
-                        <ChevronDown className="text-white" />
-                    ) : (
-                        <ChevronRight className="text-white" />
-                    )}
+                    {open
+                        ? <ChevronDown className="text-white" />
+                        : <ChevronRight className="text-white" />
+                    }
 
                 </div>
 
@@ -92,12 +110,12 @@ export default function ModuleAccordion({
                             </p>
 
                             <button
-                                onClick={handleGenerate}
-                                disabled={loading}
-                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 px-5 py-2 rounded-lg text-white transition"
+                                onClick={handleGenerateModule}
+                                disabled={loadingModule}
+                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 px-5 py-2 rounded-lg text-white"
                             >
 
-                                {loading
+                                {loadingModule
                                     ? "Generating..."
                                     : "Generate Chapters"}
 
@@ -107,26 +125,91 @@ export default function ModuleAccordion({
 
                     ) : (
 
-                        <div className="space-y-3">
+                        <div className="space-y-5">
 
                             {module.chapters.map((chapter) => (
 
                                 <div
                                     key={chapter.id}
-                                    className="bg-slate-950 border border-slate-800 rounded-lg p-4"
+                                    className="bg-slate-950 border border-slate-800 rounded-lg p-5"
                                 >
 
-                                    <h4 className="text-white font-semibold">
+                                    <div className="flex justify-between items-start">
 
-                                        {chapter.order}. {chapter.title}
+                                        <div>
 
-                                    </h4>
+                                            <h4 className="text-lg font-semibold text-white">
 
-                                    <p className="text-slate-400 mt-1">
+                                                {chapter.order}. {chapter.title}
 
-                                        {chapter.description}
+                                            </h4>
 
-                                    </p>
+                                            <p className="text-slate-400 mt-2">
+
+                                                {chapter.description}
+
+                                            </p>
+
+                                        </div>
+
+                                        {chapter.lessons.length === 0 && (
+
+                                            <button
+                                                onClick={() => handleGenerateLessons(chapter.id)}
+                                                disabled={loadingChapter === chapter.id}
+                                                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white"
+                                            >
+
+                                                {loadingChapter === chapter.id
+                                                    ? "Generating..."
+                                                    : "Generate Lessons"}
+
+                                            </button>
+
+                                        )}
+
+                                    </div>
+
+                                    {chapter.lessons.length > 0 && (
+
+                                        <div className="mt-5 space-y-3">
+
+                                            {chapter.lessons.map((lesson) => (
+
+                                                <div
+                                                    key={lesson.id}
+                                                    className="bg-slate-900 rounded-lg p-4 border border-slate-800"
+                                                >
+
+                                                    <div className="flex justify-between">
+
+                                                        <h5 className="text-white font-medium">
+
+                                                            {lesson.order}. {lesson.title}
+
+                                                        </h5>
+
+                                                        <span className="text-sm text-slate-400">
+
+                                                            {lesson.readingTime} min
+
+                                                        </span>
+
+                                                    </div>
+
+                                                    <p className="text-slate-400 mt-2 text-sm">
+
+                                                        {lesson.summary}
+
+                                                    </p>
+
+                                                </div>
+
+                                            ))}
+
+                                        </div>
+
+                                    )}
 
                                 </div>
 
