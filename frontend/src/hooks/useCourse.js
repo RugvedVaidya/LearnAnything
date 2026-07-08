@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchCourse } from "../services/course.service";
+import { generateModuleChapters } from "../services/chapter.service";
 
 export default function useCourse(courseId) {
 
@@ -32,9 +33,18 @@ export default function useCourse(courseId) {
 
     };
 
+    const generateChapters = async (moduleId) => {
+
+        await generateModuleChapters(moduleId);
+
+        await loadCourse();
+
+    };
+
     return {
         course,
         loading,
         reload: loadCourse,
+        generateChapters,
     };
 }

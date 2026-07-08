@@ -14,6 +14,7 @@ export default function CourseDetails() {
     const {
         course,
         loading,
+        generateChapters,
     } = useCourse(courseId);
 
     if (loading) {
@@ -135,6 +136,7 @@ export default function CourseDetails() {
                                         <ModuleAccordion
                                             key={module.id}
                                             module={module}
+                                            onGenerate = {generateChapters}
                                         />
 
                                     ))

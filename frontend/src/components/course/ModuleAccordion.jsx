@@ -1,9 +1,36 @@
-import { ChevronDown, ChevronRight, Clock } from "lucide-react";
 import { useState } from "react";
+import {
+    ChevronDown,
+    ChevronRight,
+    Clock,
+} from "lucide-react";
 
-export default function ModuleAccordion({ module }) {
+export default function ModuleAccordion({
+    module,
+    onGenerate,
+}) {
 
     const [open, setOpen] = useState(false);
+
+    const [loading, setLoading] = useState(false);
+
+    const handleGenerate = async () => {
+
+        try {
+
+            setLoading(true);
+
+            await onGenerate(module.id);
+
+            setOpen(true);
+
+        } finally {
+
+            setLoading(false);
+
+        }
+
+    };
 
     return (
 
@@ -14,7 +41,7 @@ export default function ModuleAccordion({ module }) {
                 className="w-full flex justify-between items-center p-5 hover:bg-slate-800 transition"
             >
 
-                <div>
+                <div className="text-left">
 
                     <h3 className="text-xl text-white font-semibold">
 
@@ -30,7 +57,7 @@ export default function ModuleAccordion({ module }) {
 
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center gap-5">
 
                     <div className="flex items-center gap-2 text-slate-400">
 
@@ -41,9 +68,9 @@ export default function ModuleAccordion({ module }) {
                     </div>
 
                     {open ? (
-                        <ChevronDown size={22} className="text-white" />
+                        <ChevronDown className="text-white" />
                     ) : (
-                        <ChevronRight size={22} className="text-white" />
+                        <ChevronRight className="text-white" />
                     )}
 
                 </div>
@@ -56,30 +83,56 @@ export default function ModuleAccordion({ module }) {
 
                     {module.chapters.length === 0 ? (
 
-                        <div className="text-slate-500">
+                        <div className="space-y-4">
 
-                            Chapters not generated yet.
+                            <p className="text-slate-400">
+
+                                Chapters have not been generated yet.
+
+                            </p>
+
+                            <button
+                                onClick={handleGenerate}
+                                disabled={loading}
+                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 px-5 py-2 rounded-lg text-white transition"
+                            >
+
+                                {loading
+                                    ? "Generating..."
+                                    : "Generate Chapters"}
+
+                            </button>
 
                         </div>
 
                     ) : (
 
-                        module.chapters.map((chapter) => (
+                        <div className="space-y-3">
 
-                            <div
-                                key={chapter.id}
-                                className="bg-slate-950 rounded-lg p-4 mb-3"
-                            >
+                            {module.chapters.map((chapter) => (
 
-                                <h4 className="text-white font-semibold">
+                                <div
+                                    key={chapter.id}
+                                    className="bg-slate-950 border border-slate-800 rounded-lg p-4"
+                                >
 
-                                    {chapter.order}. {chapter.title}
+                                    <h4 className="text-white font-semibold">
 
-                                </h4>
+                                        {chapter.order}. {chapter.title}
 
-                            </div>
+                                    </h4>
 
-                        ))
+                                    <p className="text-slate-400 mt-1">
+
+                                        {chapter.description}
+
+                                    </p>
+
+                                </div>
+
+                            ))}
+
+                        </div>
 
                     )}
 
