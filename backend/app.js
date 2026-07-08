@@ -6,6 +6,9 @@ import cookieParser from "cookie-parser";
 
 import routes from "./routes/index.js";
 import chapterRoutes from "./routes/chapter.routes.js";
+
+import lessonRoutes from "./routes/lesson.routes.js";
+
 const app = express();
 
 // Security
@@ -32,5 +35,6 @@ app.use(cookieParser());
 // API Routes
 app.use("/api/v1", routes);
 app.use("/api/v1/chapters", chapterRoutes);
+app.use("/api/v1/lessons", lessonRoutes);
 
 export default app;
