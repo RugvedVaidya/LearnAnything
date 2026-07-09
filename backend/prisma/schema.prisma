@@ -109,12 +109,16 @@ model Lesson {
 
   summary String?
 
+  content String?
+
   difficulty String
 
   readingTime Int
 
   order Int
 
+  isGenerated Boolean @default(false)
+  
   chapterId String
 
   chapter Chapter @relation(fields: [chapterId], references: [id])
