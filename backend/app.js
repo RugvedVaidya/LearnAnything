@@ -8,6 +8,7 @@ import routes from "./routes/index.js";
 import chapterRoutes from "./routes/chapter.routes.js";
 import lessonContentRoutes from "./routes/lessonContent.routes.js";
 import lessonRoutes from "./routes/lesson.routes.js";
+import mentorRoutes from "./routes/mentor.routes.js";
 
 const app = express();
 
@@ -37,4 +38,6 @@ app.use("/api/v1", routes);
 app.use("/api/v1/chapters", chapterRoutes);
 app.use("/api/v1/lessons", lessonRoutes);
 app.use("/api/v1/lesson-content", lessonContentRoutes);
+app.use("/api/v1/mentor", mentorRoutes);
+
 export default app;
