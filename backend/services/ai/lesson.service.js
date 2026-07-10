@@ -18,7 +18,7 @@ export const generateLessons = async ({
         difficulty,
     });
 
-    const response = await callLLM(prompt);
+    const response = await callLLM(prompt, false);
 
     return safeJsonParse(response);
 

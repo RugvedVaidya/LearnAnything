@@ -5,6 +5,7 @@ import Dashboard from "../pages/Dashboard";
 
 import useAuth from "../hooks/useAuth";
 import CourseDetails from "../pages/CourseDetails";
+import LessonPage from "../pages/LessonPage";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -46,6 +47,15 @@ export default function AppRoutes() {
                     element={
                         <ProtectedRoute>
                             <CourseDetails />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+                    path="/lessons/:lessonId"
+                    element={
+                        <ProtectedRoute>
+                            <LessonPage />
                         </ProtectedRoute>
                     }
                 />
