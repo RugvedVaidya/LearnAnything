@@ -5,6 +5,8 @@ import {
     Clock,
 } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 export default function ModuleAccordion({
     module,
     onGenerate,
@@ -17,6 +19,8 @@ export default function ModuleAccordion({
 
     const [loadingChapter, setLoadingChapter] = useState(null);
 
+    const navigate = useNavigate();
+    
     const handleGenerateModule = async () => {
 
         try {
@@ -178,7 +182,8 @@ export default function ModuleAccordion({
 
                                                 <div
                                                     key={lesson.id}
-                                                    className="bg-slate-900 rounded-lg p-4 border border-slate-800"
+                                                    onClick = { () => navigate(`/lessons/${lesson.id}`) }
+                                                    className="bg-slate-900 rounded-lg p-4 border border-slate-800 cursor-pointer hover:border-blue-500 hover:bg-slate-800 transition"
                                                 >
 
                                                     <div className="flex justify-between">
