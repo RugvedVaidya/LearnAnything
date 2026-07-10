@@ -5,13 +5,19 @@ import Navbar from "../components/layout/Navbar";
 import Loader from "../components/common/Loader";
 
 import MarkdownRenderer from "../components/lesson/MarkdownRenderer";
+import MentorChat from "../components/lesson/MentorChat";
+import useMentor from "../hooks/useMentor";
 
 import useLesson from "../hooks/useLesson";
 
 export default function LessonPage() {
 
     const { lessonId } = useParams();
-
+    const {
+        messages,
+        loading: mentorLoading,
+        ask,
+    } = useMentor(lessonId);
     const {
         lesson,
         loading,
@@ -226,7 +232,12 @@ ${section.code}
                             ))}
 
                         </div>
-
+                        
+                        <MentorChat
+                            messages={messages}
+                            loading={mentorLoading}
+                            ask={ask}
+                        />
                     </div>
 
                 </main>
