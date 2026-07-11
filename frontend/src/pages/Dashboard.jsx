@@ -1,11 +1,4 @@
 import { useState } from "react";
-import {
-    BookOpen,
-    Clock3,
-    Flame,
-    Sparkles,
-    TrendingUp,
-} from "lucide-react";
 
 import AppLayout from "../layouts/AppLayout";
 
@@ -13,9 +6,12 @@ import Loader from "../components/common/Loader";
 import CourseCard from "../components/course/CourseCard";
 import GenerateCourseModal from "../components/course/GenerateCourseModal";
 
-import Button from "../components/ui/Button";
-import Card from "../components/ui/Card";
-import ProgressBar from "../components/ui/ProgressBar";
+import Hero from "../components/dashboard/Hero";
+import StatsGrid from "../components/dashboard/StatsGrid";
+import ContinueLearning from "../components/dashboard/ContinueLearning";
+import MentorCard from "../components/dashboard/MentorCard";
+import QuickActions from "../components/dashboard/QuickActions";
+import AchievementCard from "../components/dashboard/AchievementCard";
 
 import useCourses from "../hooks/useCourses";
 
@@ -48,223 +44,109 @@ export default function Dashboard() {
 
         <AppLayout>
 
-            {/* HERO */}
+            <Hero />
 
-            <div className="mb-10">
+            <StatsGrid courses={courses} />
 
-                <h1 className="text-5xl font-bold text-white">
+            <ContinueLearning
 
-                    Welcome Back 👋
+                progress={72}
 
-                </h1>
+                onGenerate={() => setOpen(true)}
 
-                <p className="text-zinc-400 mt-3 text-lg">
+            />
 
-                    Continue your AI learning journey.
+            <div className="grid grid-cols-12 gap-8 mt-10">
 
-                </p>
+                {/* LEFT */}
 
-            </div>
+                <div className="col-span-8">
 
-            {/* TOP STATS */}
+                    <div className="flex items-center justify-between mb-6">
 
-            <div className="grid grid-cols-4 gap-6 mb-10">
+                        <div>
 
-                <Card className="p-6">
+                            <h2 className="text-3xl font-bold">
 
-                    <BookOpen className="text-violet-400 mb-4" />
+                                My Courses
 
-                    <p className="text-zinc-400">
+                            </h2>
 
-                        Courses
+                            <p className="text-zinc-400 mt-2">
 
-                    </p>
+                                AI generated personalized learning paths.
 
-                    <h2 className="text-4xl font-bold mt-2">
+                            </p>
 
-                        {courses.length}
-
-                    </h2>
-
-                </Card>
-
-                <Card className="p-6">
-
-                    <Clock3 className="text-blue-400 mb-4" />
-
-                    <p className="text-zinc-400">
-
-                        Hours
-
-                    </p>
-
-                    <h2 className="text-4xl font-bold mt-2">
-
-                        42
-
-                    </h2>
-
-                </Card>
-
-                <Card className="p-6">
-
-                    <Flame className="text-orange-400 mb-4" />
-
-                    <p className="text-zinc-400">
-
-                        Streak
-
-                    </p>
-
-                    <h2 className="text-4xl font-bold mt-2">
-
-                        16 Days
-
-                    </h2>
-
-                </Card>
-
-                <Card className="p-6">
-
-                    <TrendingUp className="text-green-400 mb-4" />
-
-                    <p className="text-zinc-400">
-
-                        Progress
-
-                    </p>
-
-                    <h2 className="text-4xl font-bold mt-2">
-
-                        72%
-
-                    </h2>
-
-                </Card>
-
-            </div>
-
-            {/* CONTINUE LEARNING */}
-
-            <Card className="p-8 mb-10">
-
-                <div className="flex justify-between items-center">
-
-                    <div>
-
-                        <h2 className="text-2xl font-bold">
-
-                            Continue Learning
-
-                        </h2>
-
-                        <p className="text-zinc-400 mt-2">
-
-                            Keep your momentum going.
-
-                        </p>
+                        </div>
 
                     </div>
 
-                    <Button onClick={() => setOpen(true)}>
+                    {
 
-                        <Sparkles size={18} />
+                        courses.length === 0 ? (
 
-                        Generate Course
+                            <div className="rounded-[30px] border border-[#312A50] bg-[#151827] p-16 text-center">
 
-                    </Button>
+                                <h2 className="text-3xl font-bold">
+
+                                    No Courses Yet
+
+                                </h2>
+
+                                <p className="text-zinc-400 mt-3">
+
+                                    Generate your first AI powered roadmap.
+
+                                </p>
+
+                            </div>
+
+                        ) : (
+
+                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+                                {
+
+                                    courses.map((course) => (
+
+                                        <CourseCard
+
+                                            key={course.id}
+
+                                            course={course}
+
+                                        />
+
+                                    ))
+
+                                }
+
+                            </div>
+
+                        )
+
+                    }
 
                 </div>
 
-                <div className="mt-6">
+                {/* RIGHT */}
 
-                    <ProgressBar value={72} />
+                <div className="col-span-4 space-y-6">
 
-                </div>
+                    <MentorCard />
 
-            </Card>
+                    <QuickActions
 
-            {/* COURSES */}
+                        onGenerate={() => setOpen(true)}
 
-            <div className="flex items-center justify-between mb-6">
+                    />
 
-                <div>
-
-                    <h2 className="text-3xl font-bold">
-
-                        My Courses
-
-                    </h2>
-
-                    <p className="text-zinc-400 mt-2">
-
-                        AI generated personalized learning paths.
-
-                    </p>
+                    <AchievementCard />
 
                 </div>
 
             </div>
-
-            {
-
-                courses.length === 0 ? (
-
-                    <Card className="p-16 text-center">
-
-                        <Sparkles
-                            size={60}
-                            className="mx-auto text-violet-400"
-                        />
-
-                        <h2 className="text-3xl font-bold mt-8">
-
-                            No Courses Yet
-
-                        </h2>
-
-                        <p className="text-zinc-400 mt-4">
-
-                            Generate your first AI course and start learning.
-
-                        </p>
-
-                        <Button
-                            className="mt-8"
-                            onClick={() => setOpen(true)}
-                        >
-
-                            Generate First Course
-
-                        </Button>
-
-                    </Card>
-
-                ) : (
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-
-                        {
-
-                            courses.map((course) => (
-
-                                <CourseCard
-
-                                    key={course.id}
-
-                                    course={course}
-
-                                />
-
-                            ))
-
-                        }
-
-                    </div>
-
-                )
-
-            }
 
             <GenerateCourseModal
 
