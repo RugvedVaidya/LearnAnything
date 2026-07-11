@@ -1,19 +1,11 @@
 import {
-
     Home,
-
     BookOpen,
-
     Bot,
-
     BrainCircuit,
-
     BarChart3,
-
     Settings,
-
     Target,
-
 } from "lucide-react";
 
 import Logo from "../ui/Logo";
@@ -25,37 +17,19 @@ export default function Sidebar() {
     return (
 
         <aside
-
             className="
-
-            fixed
-
-            left-6
-
-            top-6
-
-            bottom-6
-
-            w-[270px]
-
-            rounded-[32px]
-
-            bg-[#111113]
-
-            border
-
-            border-zinc-800
-
-            shadow-2xl
-
-            p-6
-
-            flex
-
-            flex-col
-
-        "
-
+                fixed
+                left-0
+                top-0
+                bottom-0
+                w-[290px]
+                bg-[#101012]
+                flex
+                flex-col
+                px-7
+                py-8
+                z-40
+            "
         >
 
             <Logo />
@@ -63,74 +37,53 @@ export default function Sidebar() {
             <div className="mt-10 space-y-2">
 
                 <SidebarItem
-
                     to="/"
-
                     icon={Home}
-
                     label="Dashboard"
-
                 />
 
                 <SidebarItem
-
                     to="/courses"
-
                     icon={BookOpen}
-
                     label="My Learning"
-
                 />
 
                 <SidebarItem
-
                     to="/mentor"
-
                     icon={Bot}
-
                     label="AI Mentor"
-
                 />
 
                 <SidebarItem
-
                     to="/quiz"
-
                     icon={BrainCircuit}
-
                     label="Quiz"
-
                 />
 
                 <SidebarItem
-
                     to="/analytics"
-
                     icon={BarChart3}
-
                     label="Analytics"
-
                 />
 
                 <SidebarItem
-
                     to="/settings"
-
                     icon={Settings}
-
                     label="Settings"
-
                 />
 
             </div>
 
-            <div className="mt-10 rounded-3xl bg-[#1A1A1F] p-5">
+            <div className="mt-10 rounded-3xl bg-[#18181E] border border-[#2C2C35] p-5">
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-3">
 
-                    <Target size={20} className="text-violet-400" />
+                    <Target
+                        size={20}
+                        className="text-violet-400"
+                    />
 
-                    <span className="font-semibold">
+                    <span className="font-semibold text-white">
 
                         Today's Goal
 
@@ -150,7 +103,7 @@ export default function Sidebar() {
 
                 </div>
 
-                <p className="mt-2 text-sm text-zinc-400">
+                <p className="mt-3 text-sm text-zinc-400">
 
                     2 / 5 Lessons
 
@@ -158,7 +111,11 @@ export default function Sidebar() {
 
             </div>
 
-            <UserProfile />
+            <div className="mt-auto">
+
+                <UserProfile />
+
+            </div>
 
         </aside>
 

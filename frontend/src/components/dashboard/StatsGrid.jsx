@@ -7,64 +7,46 @@ import {
 
 import StatCard from "./StatCard";
 
-export default function StatsGrid({
+export default function StatsGrid({ courses }) {
 
-    courses,
-
-}){
-
-    return(
+    return (
 
         <div className="grid grid-cols-4 gap-6 mb-10">
 
             <StatCard
-
                 icon={BookOpen}
-
-                title="Courses"
-
+                title="Active Courses"
                 value={courses.length}
-
-                color="#6D5EF6"
-
+                subtitle={`${courses.length} enrolled`}
+                footer="+1 this week"
+                color="from-violet-500 to-purple-600"
             />
 
             <StatCard
-
                 icon={Clock3}
-
-                title="Hours"
-
+                title="Learning Hours"
                 value="42"
-
-                color="#2563EB"
-
+                subtitle="Hours"
+                footer="This month"
+                color="from-blue-500 to-cyan-500"
             />
 
             <StatCard
-
                 icon={Flame}
-
-                title="Streak"
-
+                title="Learning Streak"
                 value="16"
-
-                subtitle="days"
-
-                color="#F97316"
-
+                subtitle="Days"
+                footer="Keep it alive 🔥"
+                color="from-orange-500 to-red-500"
             />
 
             <StatCard
-
                 icon={TrendingUp}
-
                 title="Progress"
-
                 value="72%"
-
-                color="#22C55E"
-
+                subtitle="Completed"
+                footer="Excellent pace"
+                color="from-green-500 to-emerald-500"
             />
 
         </div>

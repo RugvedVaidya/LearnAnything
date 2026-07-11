@@ -1,3 +1,4 @@
+import { ArrowUpRight } from "lucide-react";
 import Card from "../ui/Card";
 
 export default function StatCard({
@@ -8,9 +9,11 @@ export default function StatCard({
 
     value,
 
-    color,
-
     subtitle,
+
+    footer,
+
+    color,
 
 }) {
 
@@ -18,51 +21,65 @@ export default function StatCard({
 
         <Card
             hover
-            className="p-6 transition-all duration-300"
+            className="relative overflow-hidden p-6"
         >
 
-            <div className="flex justify-between items-start">
+            {/* Background Glow */}
 
-                <div>
+            <div
+                className={`absolute -right-8 -top-8 h-28 w-28 rounded-full bg-gradient-to-br ${color} opacity-15 blur-3xl`}
+            />
 
-                    <p className="text-zinc-500">
+            <div className="relative z-10">
 
-                        {title}
+                <div className="flex justify-between items-start">
 
-                    </p>
+                    <div>
 
-                    <h2 className="text-4xl font-bold mt-3">
+                        <p className="text-sm text-zinc-500 uppercase tracking-wider">
 
-                        {value}
+                            {title}
 
-                    </h2>
+                        </p>
 
-                    {
+                        <h2 className="mt-4 text-5xl font-bold">
 
-                        subtitle && (
+                            {value}
 
-                            <p className="mt-3 text-sm text-zinc-500">
+                        </h2>
 
-                                {subtitle}
+                        <p className="mt-1 text-zinc-400">
 
-                            </p>
+                            {subtitle}
 
-                        )
+                        </p>
 
-                    }
+                    </div>
+
+                    <div
+                        className={`flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${color}`}
+                    >
+
+                        <Icon
+                            size={24}
+                            className="text-white"
+                        />
+
+                    </div>
 
                 </div>
 
-                <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center"
-                    style={{
-                        background: color,
-                    }}
-                >
+                <div className="mt-8 flex items-center justify-between border-t border-[#2A2A33] pt-4">
 
-                    <Icon
-                        size={26}
-                        className="text-white"
+                    <span className="text-sm text-zinc-400">
+
+                        {footer}
+
+                    </span>
+
+                    <ArrowUpRight
+                        size={18}
+                        className="text-violet-400"
                     />
 
                 </div>

@@ -9,11 +9,11 @@ export default function AppLayout({ children }) {
 
             <Sidebar />
 
-            <div className="ml-[320px]">
+            <div className="ml-[290px] min-h-screen">
 
                 <Navbar />
 
-                <main className="p-10">
+                <main className="px-12 py-10">
 
                     {children}
 

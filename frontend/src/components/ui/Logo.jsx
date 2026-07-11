@@ -2,15 +2,17 @@ export default function Logo() {
 
     return (
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-4 min-w-0">
 
-            <div className="relative">
+            {/* Logo */}
 
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-[#9C7CFF] via-[#7B61FF] to-[#F5B942]" />
+            <div className="relative flex-shrink-0">
+
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#9C7CFF] via-[#7B61FF] to-[#F5B942]" />
 
                 <div className="absolute inset-0 flex items-center justify-center">
 
-                    <span className="text-white text-2xl font-bold">
+                    <span className="text-white text-xl font-bold">
 
                         L
 
@@ -20,15 +22,17 @@ export default function Logo() {
 
             </div>
 
-            <div>
+            {/* Text */}
 
-                <h1 className="text-4xl font-bold text-white">
+            <div className="min-w-0">
+
+                <h1 className="text-[28px] font-bold text-white leading-none truncate">
 
                     LearnAnything
 
                 </h1>
 
-                <p className="text-[#9E97B7] text-base">
+                <p className="mt-1 text-sm text-[#9E97B7] truncate">
 
                     Learn Smarter with AI
 
