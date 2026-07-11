@@ -2,15 +2,26 @@ import { useState } from "react";
 import {
     ChevronDown,
     ChevronRight,
-    Clock,
+    Clock3,
+    BookOpen,
+    Sparkles,
+    PlayCircle,
 } from "lucide-react";
 
+import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 
+import Card from "../ui/Card";
+import Button from "../ui/Button";
+
 export default function ModuleAccordion({
+
     module,
+
     onGenerate,
+
     onGenerateLessons,
+
 }) {
 
     const [open, setOpen] = useState(false);
@@ -20,7 +31,7 @@ export default function ModuleAccordion({
     const [loadingChapter, setLoadingChapter] = useState(null);
 
     const navigate = useNavigate();
-    
+
     const handleGenerateModule = async () => {
 
         try {
@@ -57,179 +68,323 @@ export default function ModuleAccordion({
 
     return (
 
-        <div className="bg-slate-900 border border-slate-800 rounded-xl overflow-hidden">
+        <Card className="overflow-hidden">
+
+            {/* HEADER */}
 
             <button
+
                 onClick={() => setOpen(!open)}
-                className="w-full flex justify-between items-center p-5 hover:bg-slate-800 transition"
+
+                className="w-full p-8 text-left"
+
             >
 
-                <div className="text-left">
+                <div className="flex justify-between items-start">
 
-                    <h3 className="text-xl font-semibold text-white">
+                    <div className="flex-1">
 
-                        {module.order}. {module.title}
+                        <div className="flex items-center gap-3">
 
-                    </h3>
+                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center">
 
-                    <p className="text-slate-400 mt-1">
+                                <BookOpen size={22} className="text-white" />
 
-                        {module.description}
+                            </div>
 
-                    </p>
+                            <div>
 
-                </div>
+                                <h2 className="text-2xl font-bold text-white">
 
-                <div className="flex items-center gap-5">
+                                    Module {module.order}
 
-                    <div className="flex items-center gap-2 text-slate-400">
+                                </h2>
 
-                        <Clock size={18} />
+                                <p className="text-zinc-500">
 
-                        {module.estimatedTime} hrs
+                                    {module.title}
+
+                                </p>
+
+                            </div>
+
+                        </div>
+
+                        <p className="text-zinc-400 mt-5 leading-7">
+
+                            {module.description}
+
+                        </p>
+
+                        <div className="flex gap-8 mt-6 text-sm text-zinc-400">
+
+                            <div className="flex items-center gap-2">
+
+                                <Clock3 size={18} />
+
+                                {module.estimatedTime} hrs
+
+                            </div>
+
+                            <div className="flex items-center gap-2">
+
+                                <BookOpen size={18} />
+
+                                {module.chapters.length} Chapters
+
+                            </div>
+
+                        </div>
 
                     </div>
 
-                    {open
-                        ? <ChevronDown className="text-white" />
-                        : <ChevronRight className="text-white" />
-                    }
+                    <div className="ml-8">
+
+                        {
+
+                            open
+
+                                ? <ChevronDown size={30} />
+
+                                : <ChevronRight size={30} />
+
+                        }
+
+                    </div>
 
                 </div>
 
             </button>
 
-            {open && (
+            <AnimatePresence>
 
-                <div className="border-t border-slate-800 p-5">
+                {
 
-                    {module.chapters.length === 0 ? (
+                    open && (
 
-                        <div className="space-y-4">
+                        <motion.div
 
-                            <p className="text-slate-400">
+                            initial={{
+                                opacity:0,
+                                height:0,
+                            }}
 
-                                Chapters have not been generated yet.
+                            animate={{
+                                opacity:1,
+                                height:"auto",
+                            }}
 
-                            </p>
+                            exit={{
+                                opacity:0,
+                                height:0,
+                            }}
 
-                            <button
-                                onClick={handleGenerateModule}
-                                disabled={loadingModule}
-                                className="bg-blue-600 hover:bg-blue-700 disabled:bg-slate-700 px-5 py-2 rounded-lg text-white"
-                            >
+                            transition={{
+                                duration:.25,
+                            }}
 
-                                {loadingModule
-                                    ? "Generating..."
-                                    : "Generate Chapters"}
+                            className="border-t border-[#322A54]"
 
-                            </button>
+                        >
 
-                        </div>
+                            <div className="p-8">
 
-                    ) : (
+                                {
 
-                        <div className="space-y-5">
+                                    module.chapters.length === 0 ? (
 
-                            {module.chapters.map((chapter) => (
+                                        <div className="rounded-3xl bg-[#171827] border border-[#312A50] p-10 text-center">
 
-                                <div
-                                    key={chapter.id}
-                                    className="bg-slate-950 border border-slate-800 rounded-lg p-5"
-                                >
+                                            <Sparkles
 
-                                    <div className="flex justify-between items-start">
+                                                className="mx-auto text-violet-400"
 
-                                        <div>
+                                                size={44}
 
-                                            <h4 className="text-lg font-semibold text-white">
+                                            />
 
-                                                {chapter.order}. {chapter.title}
+                                            <h3 className="text-2xl font-bold mt-5">
 
-                                            </h4>
+                                                Chapters Not Generated
 
-                                            <p className="text-slate-400 mt-2">
+                                            </h3>
 
-                                                {chapter.description}
+                                            <p className="text-zinc-400 mt-3">
+
+                                                Let AI generate an optimized learning roadmap.
 
                                             </p>
 
-                                        </div>
+                                            <Button
 
-                                        {chapter.lessons.length === 0 && (
+                                                loading={loadingModule}
 
-                                            <button
-                                                onClick={() => handleGenerateLessons(chapter.id)}
-                                                disabled={loadingChapter === chapter.id}
-                                                className="bg-green-600 hover:bg-green-700 px-4 py-2 rounded text-white"
+                                                onClick={handleGenerateModule}
+
+                                                className="mt-8"
+
                                             >
 
-                                                {loadingChapter === chapter.id
-                                                    ? "Generating..."
-                                                    : "Generate Lessons"}
+                                                Generate Chapters
 
-                                            </button>
-
-                                        )}
-
-                                    </div>
-
-                                    {chapter.lessons.length > 0 && (
-
-                                        <div className="mt-5 space-y-3">
-
-                                            {chapter.lessons.map((lesson) => (
-
-                                                <div
-                                                    key={lesson.id}
-                                                    onClick = { () => navigate(`/lessons/${lesson.id}`) }
-                                                    className="bg-slate-900 rounded-lg p-4 border border-slate-800 cursor-pointer hover:border-blue-500 hover:bg-slate-800 transition"
-                                                >
-
-                                                    <div className="flex justify-between">
-
-                                                        <h5 className="text-white font-medium">
-
-                                                            {lesson.order}. {lesson.title}
-
-                                                        </h5>
-
-                                                        <span className="text-sm text-slate-400">
-
-                                                            {lesson.readingTime} min
-
-                                                        </span>
-
-                                                    </div>
-
-                                                    <p className="text-slate-400 mt-2 text-sm">
-
-                                                        {lesson.summary}
-
-                                                    </p>
-
-                                                </div>
-
-                                            ))}
+                                            </Button>
 
                                         </div>
 
-                                    )}
+                                    ) : (
 
-                                </div>
+                                        <div className="space-y-6">
 
-                            ))}
+                                            {
 
-                        </div>
+                                                module.chapters.map((chapter)=>(
 
-                    )}
+                                                    <Card
 
-                </div>
+                                                        key={chapter.id}
 
-            )}
+                                                        className="p-6"
 
-        </div>
+                                                    >
+
+                                                        <div className="flex justify-between items-start">
+
+                                                            <div>
+
+                                                                <h3 className="text-xl font-bold">
+
+                                                                    {chapter.order}. {chapter.title}
+
+                                                                </h3>
+
+                                                                <p className="text-zinc-400 mt-2">
+
+                                                                    {chapter.description}
+
+                                                                </p>
+
+                                                            </div>
+
+                                                            {
+
+                                                                chapter.lessons.length===0 && (
+
+                                                                    <Button
+
+                                                                        loading={loadingChapter===chapter.id}
+
+                                                                        onClick={()=>
+
+                                                                            handleGenerateLessons(chapter.id)
+
+                                                                        }
+
+                                                                    >
+
+                                                                        Generate Lessons
+
+                                                                    </Button>
+
+                                                                )
+
+                                                            }
+
+                                                        </div>
+
+                                                        {
+
+                                                            chapter.lessons.length>0 && (
+
+                                                                <div className="mt-6 space-y-3">
+
+                                                                    {
+
+                                                                        chapter.lessons.map((lesson)=>(
+
+                                                                            <motion.div
+
+                                                                                whileHover={{
+                                                                                    x:5,
+                                                                                }}
+
+                                                                                key={lesson.id}
+
+                                                                                onClick={()=>navigate(`/lessons/${lesson.id}`)}
+
+                                                                                className="cursor-pointer rounded-2xl bg-[#171827] border border-[#322A54] p-5 hover:border-violet-500 transition"
+
+                                                                            >
+
+                                                                                <div className="flex justify-between items-center">
+
+                                                                                    <div className="flex items-center gap-3">
+
+                                                                                        <PlayCircle
+
+                                                                                            size={20}
+
+                                                                                            className="text-violet-400"
+
+                                                                                        />
+
+                                                                                        <h4 className="font-semibold">
+
+                                                                                            {lesson.order}. {lesson.title}
+
+                                                                                        </h4>
+
+                                                                                    </div>
+
+                                                                                    <span className="text-sm text-zinc-500">
+
+                                                                                        {lesson.readingTime} min
+
+                                                                                    </span>
+
+                                                                                </div>
+
+                                                                                <p className="text-zinc-400 mt-3">
+
+                                                                                    {lesson.summary}
+
+                                                                                </p>
+
+                                                                            </motion.div>
+
+                                                                        ))
+
+                                                                    }
+
+                                                                </div>
+
+                                                            )
+
+                                                        }
+
+                                                    </Card>
+
+                                                ))
+
+                                            }
+
+                                        </div>
+
+                                    )
+
+                                }
+
+                            </div>
+
+                        </motion.div>
+
+                    )
+
+                }
+
+            </AnimatePresence>
+
+        </Card>
 
     );
 
-} 
+}
