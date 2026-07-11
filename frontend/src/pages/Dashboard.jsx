@@ -44,89 +44,101 @@ export default function Dashboard() {
 
         <AppLayout>
 
+            {/* Greeting */}
+
             <Hero />
 
-            <StatsGrid courses={courses} />
+            {/* Main Grid */}
 
-            <ContinueLearning
-
-                progress={72}
-
-                onGenerate={() => setOpen(true)}
-
-            />
-
-            <div className="grid grid-cols-12 gap-8 mt-10">
+            <div className="grid grid-cols-12 gap-8 mt-6">
 
                 {/* LEFT */}
 
-                <div className="col-span-8">
+                <div className="col-span-8 space-y-6">
 
-                    <div className="flex items-center justify-between mb-6">
+                    <ContinueLearning
 
-                        <div>
+                        progress={72}
 
-                            <h2 className="text-3xl font-bold">
+                        onGenerate={() => setOpen(true)}
 
-                                My Courses
+                    />
 
-                            </h2>
+                    <StatsGrid
 
-                            <p className="text-zinc-400 mt-2">
+                        courses={courses}
 
-                                AI generated personalized learning paths.
+                    />
 
-                            </p>
+                    <div>
 
-                        </div>
+                        <div className="flex items-end justify-between mb-6">
 
-                    </div>
-
-                    {
-
-                        courses.length === 0 ? (
-
-                            <div className="rounded-[30px] border border-[#312A50] bg-[#151827] p-16 text-center">
+                            <div>
 
                                 <h2 className="text-3xl font-bold">
 
-                                    No Courses Yet
+                                    My Courses
 
                                 </h2>
 
-                                <p className="text-zinc-400 mt-3">
+                                <p className="text-zinc-400 mt-2">
 
-                                    Generate your first AI powered roadmap.
+                                    Continue where you left off.
 
                                 </p>
 
                             </div>
 
-                        ) : (
+                        </div>
 
-                            <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+                        {
 
-                                {
+                            courses.length === 0 ? (
 
-                                    courses.map((course) => (
+                                <div className="rounded-[30px] border border-[#312A50] bg-[#151827] p-16 text-center">
 
-                                        <CourseCard
+                                    <h2 className="text-3xl font-bold">
 
-                                            key={course.id}
+                                        No Courses Yet
 
-                                            course={course}
+                                    </h2>
 
-                                        />
+                                    <p className="text-zinc-400 mt-3">
 
-                                    ))
+                                        Generate your first AI powered roadmap.
 
-                                }
+                                    </p>
 
-                            </div>
+                                </div>
 
-                        )
+                            ) : (
 
-                    }
+                                <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+
+                                    {
+
+                                        courses.map((course) => (
+
+                                            <CourseCard
+
+                                                key={course.id}
+
+                                                course={course}
+
+                                            />
+
+                                        ))
+
+                                    }
+
+                                </div>
+
+                            )
+
+                        }
+
+                    </div>
 
                 </div>
 
