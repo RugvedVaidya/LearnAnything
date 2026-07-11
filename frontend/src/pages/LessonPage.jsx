@@ -1,39 +1,56 @@
 import { useParams } from "react-router-dom";
 
-import Sidebar from "../components/layout/Sidebar";
-import Navbar from "../components/layout/Navbar";
+import AppLayout from "../layouts/AppLayout";
+
 import Loader from "../components/common/Loader";
 
+import LessonHero from "../components/lesson/LessonHero";
+import LessonSidebar from "../components/lesson/LessonSidebar";
 import MarkdownRenderer from "../components/lesson/MarkdownRenderer";
 import MentorChat from "../components/lesson/MentorChat";
-import useMentor from "../hooks/useMentor";
 
 import useLesson from "../hooks/useLesson";
+import useMentor from "../hooks/useMentor";
+
+import ReadingProgress from "../components/lesson/ReadingProgress";
 
 export default function LessonPage() {
 
     const { lessonId } = useParams();
-    const {
-        messages,
-        loading: mentorLoading,
-        ask,
-    } = useMentor(lessonId);
+
     const {
         lesson,
         loading,
     } = useLesson(lessonId);
 
-    if (loading) {
-        return <Loader />;
-    }
+    const {
+        messages,
+        loading: mentorLoading,
+        ask,
+    } = useMentor(lessonId);
 
-    if (!lesson) {
+    if (loading)
+        return <Loader />;
+
+    if (!lesson)
         return (
-            <div className="h-screen flex items-center justify-center bg-slate-950 text-white">
-                Lesson not found.
-            </div>
+
+            <AppLayout>
+
+                <ReadingProgress />
+                <div className="flex justify-center items-center h-[70vh]">
+
+                    <h1 className="text-3xl font-bold">
+
+                        Lesson Not Found
+
+                    </h1>
+
+                </div>
+
+            </AppLayout>
+
         );
-    }
 
     let lessonData;
 
@@ -44,95 +61,62 @@ export default function LessonPage() {
     } catch {
 
         lessonData = {
+
             lesson_title: lesson.title,
+
             summary: lesson.summary,
+
             difficulty: lesson.difficulty,
+
             content: [
+
                 {
+
                     section: "Lesson",
+
                     text: lesson.content,
+
                 },
+
             ],
+
         };
 
     }
 
     return (
 
-        <div className="flex h-screen bg-slate-950">
+        <AppLayout>
 
-            <Sidebar />
+            <div className="max-w-[1600px] mx-auto">
 
-            <div className="flex-1 flex flex-col">
+                <LessonHero
 
-                <Navbar />
+                    lesson={lesson}
 
-                <main className="flex-1 overflow-auto p-10">
+                    lessonData={lessonData}
 
-                    <div className="max-w-5xl mx-auto">
+                />
 
-                        <h1 className="text-5xl font-bold text-white">
+                <div className="grid grid-cols-12 gap-8 mt-8">
 
-                            {lessonData.lesson_title || lesson.title}
+                    {/* LEFT */}
 
-                        </h1>
+                    <div className="col-span-8">
 
-                        {(lessonData.summary || lesson.summary) && (
-
-                            <p className="text-slate-400 mt-4 text-lg leading-8">
-
-                                {lessonData.summary || lesson.summary}
-
-                            </p>
-
-                        )}
-
-                        <div className="flex flex-wrap gap-6 mt-8">
-
-                            <div className="bg-slate-900 border border-slate-800 rounded-xl px-5 py-4">
-
-                                <p className="text-slate-400 text-sm">
-
-                                    Difficulty
-
-                                </p>
-
-                                <p className="text-white font-semibold">
-
-                                    {lessonData.difficulty || lesson.difficulty}
-
-                                </p>
-
-                            </div>
-
-                            <div className="bg-slate-900 border border-slate-800 rounded-xl px-5 py-4">
-
-                                <p className="text-slate-400 text-sm">
-
-                                    Reading Time
-
-                                </p>
-
-                                <p className="text-white font-semibold">
-
-                                    {lesson.readingTime} mins
-
-                                </p>
-
-                            </div>
-
-                        </div>
-
-                        <div className="space-y-10 mt-12">
+                        <div className="space-y-8">
 
                             {(lessonData.content || []).map((section, index) => (
 
                                 <div
+
                                     key={index}
-                                    className="bg-slate-900 border border-slate-800 rounded-xl p-8"
+
+                                    className="rounded-[28px] bg-[#171827] border border-[#322A54] p-8"
+
                                 >
 
-                                    <h2 className="text-3xl font-bold text-blue-400 mb-6">
+                                    <h2 className="text-3xl font-bold text-violet-300 mb-6">
 
                                         {section.section}
 
@@ -141,14 +125,16 @@ export default function LessonPage() {
                                     {section.text && (
 
                                         <MarkdownRenderer
+
                                             content={section.text}
+
                                         />
 
                                     )}
 
                                     {section.objectives && (
 
-                                        <ul className="list-disc ml-6 mt-5 space-y-3 text-slate-300">
+                                        <ul className="list-disc ml-6 mt-6 space-y-3">
 
                                             {section.objectives.map((item, i) => (
 
@@ -166,7 +152,7 @@ export default function LessonPage() {
 
                                     {section.points && (
 
-                                        <ul className="list-disc ml-6 mt-5 space-y-3 text-slate-300">
+                                        <ul className="list-disc ml-6 mt-6 space-y-3">
 
                                             {section.points.map((item, i) => (
 
@@ -184,12 +170,14 @@ export default function LessonPage() {
 
                                     {section.code && (
 
-                                        <div className="mt-6">
+                                        <div className="mt-8">
 
                                             <MarkdownRenderer
+
                                                 content={`\`\`\`java
 ${section.code}
 \`\`\``}
+
                                             />
 
                                         </div>
@@ -198,22 +186,25 @@ ${section.code}
 
                                     {section.questions && (
 
-                                        <div className="space-y-4 mt-6">
+                                        <div className="space-y-5 mt-8">
 
                                             {section.questions.map((question, i) => (
 
                                                 <div
+
                                                     key={i}
-                                                    className="bg-slate-950 border border-slate-700 rounded-lg p-5"
+
+                                                    className="rounded-2xl border border-[#322A54] bg-[#1A1C2D] p-5"
+
                                                 >
 
-                                                    <p className="text-yellow-400 font-semibold">
+                                                    <h3 className="font-semibold text-yellow-400">
 
                                                         Question {i + 1}
 
-                                                    </p>
+                                                    </h3>
 
-                                                    <p className="text-slate-300 mt-2">
+                                                    <p className="mt-3 text-zinc-300">
 
                                                         {question}
 
@@ -232,19 +223,36 @@ ${section.code}
                             ))}
 
                         </div>
-                        
-                        <MentorChat
-                            messages={messages}
-                            loading={mentorLoading}
-                            ask={ask}
-                        />
+
+                        <div className="mt-10">
+
+                            <MentorChat
+
+                                messages={messages}
+
+                                loading={mentorLoading}
+
+                                ask={ask}
+
+                            />
+
+                        </div>
+
                     </div>
 
-                </main>
+                    {/* RIGHT */}
+
+                    <div className="col-span-4">
+
+                        <LessonSidebar />
+
+                    </div>
+
+                </div>
 
             </div>
 
-        </div>
+        </AppLayout>
 
     );
 

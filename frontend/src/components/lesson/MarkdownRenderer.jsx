@@ -1,14 +1,16 @@
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeHighlight from "rehype-highlight";
+import "./MarkdownStyles.css";
 
 import "highlight.js/styles/github-dark.css";
 import "github-markdown-css/github-markdown-dark.css";
 
+
 export default function MarkdownRenderer({ content }) {
 
     return (
-
+        <div className = 'markdown'>
         <article className="markdown-body !bg-transparent !text-slate-200 max-w-none">
 
             <ReactMarkdown
@@ -21,6 +23,7 @@ export default function MarkdownRenderer({ content }) {
             </ReactMarkdown>
 
         </article>
+        </div>
 
     );
 
