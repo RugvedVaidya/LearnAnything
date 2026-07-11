@@ -1,62 +1,345 @@
-import { BookOpen, Clock, Layers } from "lucide-react";
-import {useNavigate} from "react-router-dom";
+import { motion } from "framer-motion";
+import {
+    BookOpen,
+    Clock3,
+    Layers3,
+    ArrowRight,
+    Sparkles,
+} from "lucide-react";
+
+import { useNavigate } from "react-router-dom";
 
 export default function CourseCard({ course }) {
 
     const navigate = useNavigate();
 
-    const handleCourseClick = () => {
-        navigate(`/courses/${course.id}`);
+    const progress = 72;
+
+    const difficultyColor = {
+        BEGINNER: "bg-green-500/20 text-green-400 border-green-500/30",
+        INTERMEDIATE: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+        ADVANCED: "bg-red-500/20 text-red-400 border-red-500/30",
     };
 
     return (
 
-        <div
-    onClick={() => navigate(`/courses/${course.id}`)}
-    className="bg-slate-900 border border-slate-800 rounded-2xl p-6 hover:border-blue-500 transition cursor-pointer"
->
+        <motion.div
 
-            <h2 className="text-2xl font-bold text-white">
+            whileHover={{
+                y: -8,
+                scale: 1.015,
+            }}
 
-                {course.title}
+            transition={{
+                duration: .25,
+            }}
 
-            </h2>
+            onClick={() => navigate(`/courses/${course.id}`)}
 
-            <p className="text-slate-400 mt-2 line-clamp-2">
+            className="
 
-                {course.description}
+                group
 
-            </p>
+                cursor-pointer
 
-            <div className="flex gap-6 mt-6 text-slate-300">
+                rounded-[30px]
 
-                <div className="flex items-center gap-2">
+                overflow-hidden
 
-                    <BookOpen size={18} />
+                border
 
-                    {course.difficulty}
+                border-[#312A50]
 
-                </div>
+                bg-[#151827]
 
-                <div className="flex items-center gap-2">
+                hover:border-violet-500/60
 
-                    <Clock size={18} />
+                transition-all
 
-                    {course.estimatedHours} hrs
+                duration-300
 
-                </div>
+                shadow-[0_20px_60px_rgba(0,0,0,.45)]
 
-                <div className="flex items-center gap-2">
+            "
 
-                    <Layers size={18} />
+        >
 
-                    {course.modules.length} Modules
+            {/* Header */}
+
+            <div className="
+
+                relative
+
+                h-36
+
+                bg-gradient-to-br
+
+                from-violet-600
+
+                via-[#4E3ED9]
+
+                to-[#241B52]
+
+                p-6
+
+            ">
+
+                <div className="absolute right-0 top-0 w-36 h-36 rounded-full bg-white/10 translate-x-10 -translate-y-10"/>
+
+                <div className="flex justify-between items-start">
+
+                    <div className="flex items-center gap-2">
+
+                        <Sparkles
+                            size={16}
+                            className="text-yellow-300"
+                        />
+
+                        <span className="text-sm text-white/90 font-medium">
+
+                            AI Generated
+
+                        </span>
+
+                    </div>
+
+                    <span
+
+                        className={`
+
+                            px-3
+
+                            py-1
+
+                            rounded-full
+
+                            text-xs
+
+                            font-semibold
+
+                            border
+
+                            ${difficultyColor[course.difficulty]}
+
+                        `}
+
+                    >
+
+                        {course.difficulty}
+
+                    </span>
 
                 </div>
 
             </div>
 
-        </div>
+            {/* Body */}
+
+            <div className="p-6">
+
+                <h2 className="
+
+                    text-2xl
+
+                    font-bold
+
+                    text-white
+
+                    line-clamp-2
+
+                ">
+
+                    {course.title}
+
+                </h2>
+
+                <p className="
+
+                    mt-3
+
+                    text-zinc-400
+
+                    leading-relaxed
+
+                    line-clamp-3
+
+                    min-h-[72px]
+
+                ">
+
+                    {course.description}
+
+                </p>
+
+                {/* Progress */}
+
+                <div className="mt-6">
+
+                    <div className="flex justify-between text-sm">
+
+                        <span className="text-zinc-500">
+
+                            Progress
+
+                        </span>
+
+                        <span className="text-violet-400 font-semibold">
+
+                            {progress}%
+
+                        </span>
+
+                    </div>
+
+                    <div className="
+
+                        mt-2
+
+                        h-2
+
+                        rounded-full
+
+                        bg-zinc-800
+
+                        overflow-hidden
+
+                    ">
+
+                        <div
+
+                            className="
+
+                                h-full
+
+                                rounded-full
+
+                                bg-gradient-to-r
+
+                                from-violet-500
+
+                                to-purple-400
+
+                            "
+
+                            style={{
+
+                                width: `${progress}%`
+
+                            }}
+
+                        />
+
+                    </div>
+
+                </div>
+
+                {/* Stats */}
+
+                <div className="
+
+                    grid
+
+                    grid-cols-3
+
+                    gap-3
+
+                    mt-7
+
+                ">
+
+                    <div className="flex items-center gap-2 text-zinc-300">
+
+                        <Clock3 size={18}/>
+
+                        <span>
+
+                            {course.estimatedHours} hrs
+
+                        </span>
+
+                    </div>
+
+                    <div className="flex items-center gap-2 text-zinc-300">
+
+                        <Layers3 size={18}/>
+
+                        <span>
+
+                            {course.modules.length} Modules
+
+                        </span>
+
+                    </div>
+
+                    <div className="flex items-center gap-2 text-zinc-300">
+
+                        <BookOpen size={18}/>
+
+                        <span>
+                            {course.modules.reduce(
+                                (total, module) =>
+                                    total + (module.chapters?.length || 0),
+                                0
+                            )} Chapters
+                        </span>
+
+                    </div>
+
+                </div>
+
+                {/* Footer */}
+
+                <div className="
+
+                    mt-8
+
+                    pt-5
+
+                    border-t
+
+                    border-zinc-800
+
+                    flex
+
+                    justify-between
+
+                    items-center
+
+                ">
+
+                    <span className="
+
+                        text-violet-400
+
+                        font-semibold
+
+                    ">
+
+                        Continue Learning
+
+                    </span>
+
+                    <ArrowRight
+
+                        className="
+
+                            text-violet-400
+
+                            transition-transform
+
+                            duration-300
+
+                            group-hover:translate-x-2
+
+                        "
+
+                    />
+
+                </div>
+
+            </div>
+
+        </motion.div>
 
     );
 

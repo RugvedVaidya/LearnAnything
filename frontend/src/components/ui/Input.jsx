@@ -41,7 +41,7 @@ export default function Input({
 
                     "flex items-center",
 
-                    "rounded-2xl",
+                    "rounded-3xl",
 
                     "bg-[#26203F]",
 
@@ -53,7 +53,7 @@ export default function Input({
 
                     "focus-within:ring-[#8B7CF7]/20",
 
-                    "transition-all",
+                    "transition-all duration-300 hover:border-[#5B4BFF]",
 
                     className
 
@@ -98,7 +98,7 @@ export default function Input({
 
                         px-5
 
-                        py-4
+                        py-5
 
                     "
 

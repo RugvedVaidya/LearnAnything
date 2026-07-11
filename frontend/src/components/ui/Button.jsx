@@ -52,6 +52,8 @@ export default function Button({
 
         <motion.button
 
+            type = {type}
+            
             whileHover={{
                 scale: 1.02,
             }}

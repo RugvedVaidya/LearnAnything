@@ -1,167 +1,284 @@
-// import { useState } from "react";
+import { useState } from "react";
+import {
+    BookOpen,
+    Clock3,
+    Flame,
+    Sparkles,
+    TrendingUp,
+} from "lucide-react";
 
-// import Sidebar from "../components/layout/Sidebar";
-// import Navbar from "../components/layout/Navbar";
-// import Loader from "../components/common/Loader";
-// import CourseCard from "../components/course/CourseCard";
-// import GenerateCourseModal from "../components/course/GenerateCourseModal";
+import AppLayout from "../layouts/AppLayout";
 
-// import useCourses from "../hooks/useCourses";
+import Loader from "../components/common/Loader";
+import CourseCard from "../components/course/CourseCard";
+import GenerateCourseModal from "../components/course/GenerateCourseModal";
 
-// export default function Dashboard() {
-
-//     const [open, setOpen] = useState(false);
-
-//     const {
-//         courses,
-//         loading,
-//         generate,
-//         generating,
-//     } = useCourses();
-
-//     const handleGenerate = async (data) => {
-
-//         await generate(data);
-
-//         setOpen(false);
-
-//     };
-
-//     return (
-
-//         <div className="flex h-screen bg-slate-950">
-
-//             <Sidebar />
-
-//             <div className="flex-1 flex flex-col">
-
-//                 <Navbar
-//                     onGenerate={() => setOpen(true)}
-//                 />
-
-//                 <main className="flex-1 overflow-auto p-8">
-
-//                     <div className="flex items-center justify-between">
-
-//                         <div>
-
-//                             <h1 className="text-4xl font-bold text-white">
-
-//                                 My Courses
-
-//                             </h1>
-
-//                             <p className="text-slate-400 mt-2">
-
-//                                 Continue your learning journey.
-
-//                             </p>
-
-//                         </div>
-
-//                     </div>
-
-//                     {loading ? (
-
-//                         <Loader />
-
-//                     ) : courses.length === 0 ? (
-
-//                         <div className="flex justify-center items-center h-96">
-
-//                             <div className="text-center">
-
-//                                 <h2 className="text-2xl text-white font-semibold">
-
-//                                     No Courses Yet
-
-//                                 </h2>
-
-//                                 <p className="text-slate-400 mt-2">
-
-//                                     Click "Generate Course" to create your first AI roadmap.
-
-//                                 </p>
-
-//                             </div>
-
-//                         </div>
-
-//                     ) : (
-
-//                         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mt-8">
-
-//                             {courses.map((course) => (
-
-//                                 <CourseCard
-//                                     key={course.id}
-//                                     course={course}
-//                                 />
-
-//                             ))}
-
-//                         </div>
-
-//                     )}
-
-//                 </main>
-
-//             </div>
-
-//             <GenerateCourseModal
-//                 open={open}
-//                 loading={generating}
-//                 onClose={() => setOpen(false)}
-//                 onGenerate={handleGenerate}
-//             />
-
-//         </div>
-
-//     );
-
-// }
 import Button from "../components/ui/Button";
-import Input from "../components/ui/Input";
+import Card from "../components/ui/Card";
+import ProgressBar from "../components/ui/ProgressBar";
 
-import { FiMail } from "react-icons/fi";
+import useCourses from "../hooks/useCourses";
 
 export default function Dashboard() {
 
+    const [open, setOpen] = useState(false);
+
+    const {
+        courses,
+        loading,
+        generate,
+        generating,
+    } = useCourses();
+
+    const handleGenerate = async (data) => {
+
+        await generate(data);
+
+        setOpen(false);
+
+    };
+
+    if (loading) {
+
+        return <Loader />;
+
+    }
+
     return (
 
-        <div className="min-h-screen bg-[#171717] flex items-center justify-center">
+        <AppLayout>
 
-            <div className="w-[420px] space-y-6">
+            {/* HERO */}
 
-                <Input
+            <div className="mb-10">
 
-                    label="Email"
+                <h1 className="text-5xl font-bold text-white">
 
-                    placeholder="tester@gmail.com"
+                    Welcome Back 👋
 
-                    icon={<FiMail />}
+                </h1>
 
-                />
+                <p className="text-zinc-400 mt-3 text-lg">
 
-                <Input
+                    Continue your AI learning journey.
 
-                    label="Password"
-
-                    type="password"
-
-                    placeholder="Enter password"
-
-                />
-
-                <Button className="w-full">
-
-                    Login
-
-                </Button>
+                </p>
 
             </div>
 
-        </div>
+            {/* TOP STATS */}
+
+            <div className="grid grid-cols-4 gap-6 mb-10">
+
+                <Card className="p-6">
+
+                    <BookOpen className="text-violet-400 mb-4" />
+
+                    <p className="text-zinc-400">
+
+                        Courses
+
+                    </p>
+
+                    <h2 className="text-4xl font-bold mt-2">
+
+                        {courses.length}
+
+                    </h2>
+
+                </Card>
+
+                <Card className="p-6">
+
+                    <Clock3 className="text-blue-400 mb-4" />
+
+                    <p className="text-zinc-400">
+
+                        Hours
+
+                    </p>
+
+                    <h2 className="text-4xl font-bold mt-2">
+
+                        42
+
+                    </h2>
+
+                </Card>
+
+                <Card className="p-6">
+
+                    <Flame className="text-orange-400 mb-4" />
+
+                    <p className="text-zinc-400">
+
+                        Streak
+
+                    </p>
+
+                    <h2 className="text-4xl font-bold mt-2">
+
+                        16 Days
+
+                    </h2>
+
+                </Card>
+
+                <Card className="p-6">
+
+                    <TrendingUp className="text-green-400 mb-4" />
+
+                    <p className="text-zinc-400">
+
+                        Progress
+
+                    </p>
+
+                    <h2 className="text-4xl font-bold mt-2">
+
+                        72%
+
+                    </h2>
+
+                </Card>
+
+            </div>
+
+            {/* CONTINUE LEARNING */}
+
+            <Card className="p-8 mb-10">
+
+                <div className="flex justify-between items-center">
+
+                    <div>
+
+                        <h2 className="text-2xl font-bold">
+
+                            Continue Learning
+
+                        </h2>
+
+                        <p className="text-zinc-400 mt-2">
+
+                            Keep your momentum going.
+
+                        </p>
+
+                    </div>
+
+                    <Button onClick={() => setOpen(true)}>
+
+                        <Sparkles size={18} />
+
+                        Generate Course
+
+                    </Button>
+
+                </div>
+
+                <div className="mt-6">
+
+                    <ProgressBar value={72} />
+
+                </div>
+
+            </Card>
+
+            {/* COURSES */}
+
+            <div className="flex items-center justify-between mb-6">
+
+                <div>
+
+                    <h2 className="text-3xl font-bold">
+
+                        My Courses
+
+                    </h2>
+
+                    <p className="text-zinc-400 mt-2">
+
+                        AI generated personalized learning paths.
+
+                    </p>
+
+                </div>
+
+            </div>
+
+            {
+
+                courses.length === 0 ? (
+
+                    <Card className="p-16 text-center">
+
+                        <Sparkles
+                            size={60}
+                            className="mx-auto text-violet-400"
+                        />
+
+                        <h2 className="text-3xl font-bold mt-8">
+
+                            No Courses Yet
+
+                        </h2>
+
+                        <p className="text-zinc-400 mt-4">
+
+                            Generate your first AI course and start learning.
+
+                        </p>
+
+                        <Button
+                            className="mt-8"
+                            onClick={() => setOpen(true)}
+                        >
+
+                            Generate First Course
+
+                        </Button>
+
+                    </Card>
+
+                ) : (
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+
+                        {
+
+                            courses.map((course) => (
+
+                                <CourseCard
+
+                                    key={course.id}
+
+                                    course={course}
+
+                                />
+
+                            ))
+
+                        }
+
+                    </div>
+
+                )
+
+            }
+
+            <GenerateCourseModal
+
+                open={open}
+
+                loading={generating}
+
+                onClose={() => setOpen(false)}
+
+                onGenerate={handleGenerate}
+
+            />
+
+        </AppLayout>
 
     );
 

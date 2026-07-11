@@ -1,74 +1,166 @@
 import {
-    LayoutDashboard,
+
+    Home,
+
     BookOpen,
-    Brain,
-    FileQuestion,
+
+    Bot,
+
+    BrainCircuit,
+
+    BarChart3,
+
     Settings,
+
+    Target,
+
 } from "lucide-react";
+
+import Logo from "../ui/Logo";
+import SidebarItem from "./SidebarItem";
+import UserProfile from "./UserProfile";
 
 export default function Sidebar() {
 
     return (
 
-        <aside className="w-64 h-screen bg-slate-900 border-r border-slate-800 text-white flex flex-col">
+        <aside
 
-            <div className="p-6">
+            className="
 
-                <h1 className="text-2xl font-bold text-blue-400">
+            fixed
 
-                    LearnAnything AI
+            left-6
 
-                </h1>
+            top-6
+
+            bottom-6
+
+            w-[270px]
+
+            rounded-[32px]
+
+            bg-[#111113]
+
+            border
+
+            border-zinc-800
+
+            shadow-2xl
+
+            p-6
+
+            flex
+
+            flex-col
+
+        "
+
+        >
+
+            <Logo />
+
+            <div className="mt-10 space-y-2">
+
+                <SidebarItem
+
+                    to="/"
+
+                    icon={Home}
+
+                    label="Dashboard"
+
+                />
+
+                <SidebarItem
+
+                    to="/courses"
+
+                    icon={BookOpen}
+
+                    label="My Learning"
+
+                />
+
+                <SidebarItem
+
+                    to="/mentor"
+
+                    icon={Bot}
+
+                    label="AI Mentor"
+
+                />
+
+                <SidebarItem
+
+                    to="/quiz"
+
+                    icon={BrainCircuit}
+
+                    label="Quiz"
+
+                />
+
+                <SidebarItem
+
+                    to="/analytics"
+
+                    icon={BarChart3}
+
+                    label="Analytics"
+
+                />
+
+                <SidebarItem
+
+                    to="/settings"
+
+                    icon={Settings}
+
+                    label="Settings"
+
+                />
 
             </div>
 
-            <nav className="flex-1 px-4">
+            <div className="mt-10 rounded-3xl bg-[#1A1A1F] p-5">
 
-                <SidebarItem
-                    icon={<LayoutDashboard size={20} />}
-                    title="Dashboard"
-                />
+                <div className="flex items-center gap-2">
 
-                <SidebarItem
-                    icon={<BookOpen size={20} />}
-                    title="My Courses"
-                />
+                    <Target size={20} className="text-violet-400" />
 
-                <SidebarItem
-                    icon={<Brain size={20} />}
-                    title="AI Mentor"
-                />
+                    <span className="font-semibold">
 
-                <SidebarItem
-                    icon={<FileQuestion size={20} />}
-                    title="Quiz"
-                />
+                        Today's Goal
 
-                <SidebarItem
-                    icon={<Settings size={20} />}
-                    title="Settings"
-                />
+                    </span>
 
-            </nav>
+                </div>
+
+                <p className="text-sm text-zinc-500 mt-3">
+
+                    Finish 2 lessons
+
+                </p>
+
+                <div className="mt-4 h-2 rounded-full bg-zinc-800 overflow-hidden">
+
+                    <div className="h-full w-2/5 rounded-full bg-gradient-to-r from-violet-500 to-purple-500" />
+
+                </div>
+
+                <p className="mt-2 text-sm text-zinc-400">
+
+                    2 / 5 Lessons
+
+                </p>
+
+            </div>
+
+            <UserProfile />
 
         </aside>
-
-    );
-
-}
-
-function SidebarItem({ icon, title }) {
-
-    return (
-
-        <button
-            className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-slate-800 transition mb-2"
-        >
-            {icon}
-
-            <span>{title}</span>
-
-        </button>
 
     );
 
