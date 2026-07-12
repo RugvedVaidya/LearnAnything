@@ -1,19 +1,34 @@
-import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+import {
+    ArrowLeft,
+    ArrowRight,
+    BookOpen,
+} from "lucide-react";
+
 import { useNavigate } from "react-router-dom";
 
 import Card from "../ui/Card";
 import Button from "../ui/Button";
 
-export default function LessonNavigation({ navigation }) {
+export default function LessonNavigation({
+
+    navigation,
+
+}) {
 
     const navigate = useNavigate();
 
-    if (!navigation) return null;
+    if (!navigation) {
+
+        return null;
+
+    }
 
     const {
+
         previousLesson,
+
         nextLesson,
-        chapter,
+
     } = navigation;
 
     return (
@@ -22,75 +37,122 @@ export default function LessonNavigation({ navigation }) {
 
             <div className="flex items-center gap-3 mb-8">
 
-                <BookOpen className="text-violet-400" />
+                <BookOpen
+                    className="text-violet-400"
+                    size={24}
+                />
 
-                <h2 className="text-2xl font-bold">
+                <div>
 
-                    Continue Learning
+                    <h2 className="text-2xl font-bold">
 
-                </h2>
+                        Continue Your Journey
+
+                    </h2>
+
+                    <p className="text-zinc-500 mt-1">
+
+                        Move seamlessly through your learning roadmap.
+
+                    </p>
+
+                </div>
 
             </div>
 
             <div className="grid grid-cols-2 gap-6">
 
-                {/* Previous */}
+                {/* Previous Lesson */}
 
-                <div className="rounded-2xl border border-[#322A54] bg-[#171827] p-6">
+                <div className="rounded-3xl border border-[#322A54] bg-[#171827] p-6 flex flex-col justify-between">
 
-                    <p className="text-zinc-500 text-sm">
+                    <div>
 
-                        Previous Lesson
+                        <p className="text-sm text-zinc-500">
 
-                    </p>
+                            Previous Lesson
 
-                    {
+                        </p>
 
-                        previousLesson ? (
+                        {
 
-                            <>
+                            previousLesson ? (
 
-                                <h3 className="mt-3 text-xl font-semibold">
+                                <>
 
-                                    {previousLesson.title}
+                                    <h3 className="mt-3 text-xl font-semibold text-white">
 
-                                </h3>
+                                        {previousLesson.title}
 
-                                <p className="mt-2 text-zinc-500">
+                                    </h3>
 
-                                    {chapter.title}
+                                    {
 
-                                </p>
+                                        previousLesson.module && (
 
-                                <Button
+                                            <p className="mt-3 text-sm text-violet-400">
 
-                                    variant="secondary"
+                                                {previousLesson.module.title}
 
-                                    className="mt-6"
+                                            </p>
 
-                                    onClick={() =>
-
-                                        navigate(`/lessons/${previousLesson.id}`)
+                                        )
 
                                     }
 
-                                >
+                                    {
 
-                                    <ArrowLeft size={18} />
+                                        previousLesson.chapter && (
 
-                                    Previous
+                                            <p className="text-sm text-zinc-500">
 
-                                </Button>
+                                                {previousLesson.chapter.title}
 
-                            </>
+                                            </p>
 
-                        ) : (
+                                        )
 
-                            <p className="mt-6 text-zinc-500">
+                                    }
 
-                                This is the first lesson.
+                                </>
 
-                            </p>
+                            ) : (
+
+                                <p className="mt-5 text-zinc-500">
+
+                                    You're at the beginning of this course.
+
+                                </p>
+
+                            )
+
+                        }
+
+                    </div>
+
+                    {
+
+                        previousLesson && (
+
+                            <Button
+
+                                variant="secondary"
+
+                                className="mt-8 w-fit"
+
+                                onClick={() =>
+
+                                    navigate(`/lessons/${previousLesson.id}`)
+
+                                }
+
+                            >
+
+                                <ArrowLeft size={18} />
+
+                                Previous
+
+                            </Button>
 
                         )
 
@@ -98,61 +160,95 @@ export default function LessonNavigation({ navigation }) {
 
                 </div>
 
-                {/* Next */}
+                {/* Next Lesson */}
 
-                <div className="rounded-2xl border border-[#322A54] bg-[#171827] p-6">
+                <div className="rounded-3xl border border-[#322A54] bg-[#171827] p-6 flex flex-col justify-between">
 
-                    <p className="text-zinc-500 text-sm">
+                    <div>
 
-                        Next Lesson
+                        <p className="text-sm text-zinc-500">
 
-                    </p>
+                            Next Lesson
 
-                    {
+                        </p>
 
-                        nextLesson ? (
+                        {
 
-                            <>
+                            nextLesson ? (
 
-                                <h3 className="mt-3 text-xl font-semibold">
+                                <>
 
-                                    {nextLesson.title}
+                                    <h3 className="mt-3 text-xl font-semibold text-white">
 
-                                </h3>
+                                        {nextLesson.title}
 
-                                <p className="mt-2 text-zinc-500">
+                                    </h3>
 
-                                    {chapter.title}
+                                    {
 
-                                </p>
+                                        nextLesson.module && (
 
-                                <Button
+                                            <p className="mt-3 text-sm text-violet-400">
 
-                                    className="mt-6"
+                                                {nextLesson.module.title}
 
-                                    onClick={() =>
+                                            </p>
 
-                                        navigate(`/lessons/${nextLesson.id}`)
+                                        )
 
                                     }
 
-                                >
+                                    {
 
-                                    Next
+                                        nextLesson.chapter && (
 
-                                    <ArrowRight size={18} />
+                                            <p className="text-sm text-zinc-500">
 
-                                </Button>
+                                                {nextLesson.chapter.title}
 
-                            </>
+                                            </p>
 
-                        ) : (
+                                        )
 
-                            <p className="mt-6 text-zinc-500">
+                                    }
 
-                                You've reached the final lesson.
+                                </>
 
-                            </p>
+                            ) : (
+
+                                <p className="mt-5 text-zinc-500">
+
+                                    🎉 Congratulations! You've completed every lesson in this course.
+
+                                </p>
+
+                            )
+
+                        }
+
+                    </div>
+
+                    {
+
+                        nextLesson && (
+
+                            <Button
+
+                                className="mt-8 w-fit ml-auto"
+
+                                onClick={() =>
+
+                                    navigate(`/lessons/${nextLesson.id}`)
+
+                                }
+
+                            >
+
+                                Next
+
+                                <ArrowRight size={18} />
+
+                            </Button>
 
                         )
 

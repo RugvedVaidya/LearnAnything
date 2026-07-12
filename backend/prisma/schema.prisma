@@ -43,6 +43,8 @@ model User {
 
   courses        Course[]
   userPreference UserPreference?
+
+  lessonProgress LessonProgress[]
 }
 
 model Course {
@@ -122,6 +124,8 @@ model Lesson {
   chapterId String
 
   chapter Chapter @relation(fields: [chapterId], references: [id])
+
+  progress LessonProgress[]
 }
 
 model UserPreference {
@@ -137,5 +141,27 @@ model UserPreference {
 
   user User @relation(fields: [userId], references: [id])
 }
+model LessonProgress {
 
+  id           String   @id @default(cuid())
 
+  completed    Boolean  @default(false)
+
+  completedAt  DateTime?
+
+  lastOpenedAt DateTime @default(now())
+
+  timeSpent    Int      @default(0)
+
+  createdAt    DateTime @default(now())
+
+  updatedAt    DateTime @updatedAt
+
+  userId       String
+  lessonId     String
+
+  user         User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson       Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}

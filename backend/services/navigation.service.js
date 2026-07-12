@@ -14,19 +14,49 @@ export const getLessonNavigation = async (lessonId) => {
 
                 include: {
 
-                    lessons: {
-
-                        orderBy: {
-                            order: "asc",
-                        },
-
-                    },
-
                     module: {
 
                         include: {
 
-                            course: true,
+                            course: {
+
+                                include: {
+
+                                    modules: {
+
+                                        orderBy: {
+                                            order: "asc",
+                                        },
+
+                                        include: {
+
+                                            chapters: {
+
+                                                orderBy: {
+                                                    order: "asc",
+                                                },
+
+                                                include: {
+
+                                                    lessons: {
+
+                                                        orderBy: {
+                                                            order: "asc",
+                                                        },
+
+                                                    },
+
+                                                },
+
+                                            },
+
+                                        },
+
+                                    },
+
+                                },
+
+                            },
 
                         },
 
@@ -46,19 +76,55 @@ export const getLessonNavigation = async (lessonId) => {
 
     }
 
-    const lessons = lesson.chapter.lessons;
+    const course = lesson.chapter.module.course;
 
-    const currentIndex = lessons.findIndex(
+    const allLessons = [];
 
-        (l) => l.id === lesson.id
+    course.modules.forEach((module) => {
+
+        module.chapters.forEach((chapter) => {
+
+            chapter.lessons.forEach((lesson) => {
+
+                allLessons.push({
+
+                    ...lesson,
+
+                    chapter,
+
+                    module,
+
+                });
+
+            });
+
+        });
+
+    });
+
+    const currentIndex = allLessons.findIndex(
+
+        l => l.id === lessonId
 
     );
 
     return {
 
-        course: lesson.chapter.module.course,
+        course: {
 
-        module: lesson.chapter.module,
+            id: course.id,
+
+            title: course.title,
+
+        },
+
+        module: {
+
+            id: lesson.chapter.module.id,
+
+            title: lesson.chapter.module.title,
+
+        },
 
         chapter: {
 
@@ -66,51 +132,23 @@ export const getLessonNavigation = async (lessonId) => {
 
             title: lesson.chapter.title,
 
-            description: lesson.chapter.description,
-
-            order: lesson.chapter.order,
-
         },
 
-        currentLesson: {
-
-            id: lesson.id,
-
-            title: lesson.title,
-
-            order: lesson.order,
-
-        },
+        currentLesson: allLessons[currentIndex],
 
         previousLesson:
 
             currentIndex > 0
 
-                ? {
-
-                    id: lessons[currentIndex - 1].id,
-
-                    title: lessons[currentIndex - 1].title,
-
-                    order: lessons[currentIndex - 1].order,
-
-                }
+                ? allLessons[currentIndex - 1]
 
                 : null,
 
         nextLesson:
 
-            currentIndex < lessons.length - 1
+            currentIndex < allLessons.length - 1
 
-                ? {
-
-                    id: lessons[currentIndex + 1].id,
-
-                    title: lessons[currentIndex + 1].title,
-
-                    order: lessons[currentIndex + 1].order,
-
-                }
+                ? allLessons[currentIndex + 1]
 
                 : null,
 
