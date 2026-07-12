@@ -13,6 +13,9 @@ import ReadingProgress from "../components/lesson/ReadingProgress";
 import useLesson from "../hooks/useLesson";
 import useMentor from "../hooks/useMentor";
 
+import useNavigation from "../hooks/useNavigation";
+import LessonNavigation from "../components/lesson/LessonNavigation";
+
 export default function LessonPage() {
 
     const { lessonId } = useParams();
@@ -28,11 +31,17 @@ export default function LessonPage() {
         ask,
     } = useMentor(lessonId);
 
+    const {
+        navigation,
+    } = useNavigation(lessonId);
+
     if (loading) {
 
         return <Loader />;
 
     }
+
+    console.log(navigation);
 
     if (!lesson) {
 
@@ -141,6 +150,12 @@ export default function LessonPage() {
                                 loading={mentorLoading}
 
                                 ask={ask}
+
+                            />
+
+                            <LessonNavigation
+
+                                navigation={navigation}
 
                             />
 

@@ -1,99 +1,168 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, BookOpen } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
 import Card from "../ui/Card";
+import Button from "../ui/Button";
 
-export default function LessonNavigation({
+export default function LessonNavigation({ navigation }) {
 
-    previous,
+    const navigate = useNavigate();
 
-    next,
+    if (!navigation) return null;
 
-    onPrevious,
-
-    onNext,
-
-}) {
+    const {
+        previousLesson,
+        nextLesson,
+        chapter,
+    } = navigation;
 
     return (
 
-        <div className="grid grid-cols-2 gap-6 mt-12">
+        <Card className="p-8 mt-10">
 
-            <Card
+            <div className="flex items-center gap-3 mb-8">
 
-                hover={!!previous}
+                <BookOpen className="text-violet-400" />
 
-                className={`p-6 ${
-                    previous
-                        ? "cursor-pointer"
-                        : "opacity-50"
-                }`}
+                <h2 className="text-2xl font-bold">
 
-                onClick={previous ? onPrevious : undefined}
+                    Continue Learning
 
-            >
+                </h2>
 
-                <div className="flex items-center gap-3">
+            </div>
 
-                    <ChevronLeft />
+            <div className="grid grid-cols-2 gap-6">
 
-                    <div>
+                {/* Previous */}
 
-                        <p className="text-sm text-zinc-500">
+                <div className="rounded-2xl border border-[#322A54] bg-[#171827] p-6">
 
-                            Previous Lesson
+                    <p className="text-zinc-500 text-sm">
 
-                        </p>
+                        Previous Lesson
 
-                        <h3 className="font-semibold mt-1">
+                    </p>
 
-                            {previous?.title || "No Previous Lesson"}
+                    {
 
-                        </h3>
+                        previousLesson ? (
 
-                    </div>
+                            <>
+
+                                <h3 className="mt-3 text-xl font-semibold">
+
+                                    {previousLesson.title}
+
+                                </h3>
+
+                                <p className="mt-2 text-zinc-500">
+
+                                    {chapter.title}
+
+                                </p>
+
+                                <Button
+
+                                    variant="secondary"
+
+                                    className="mt-6"
+
+                                    onClick={() =>
+
+                                        navigate(`/lessons/${previousLesson.id}`)
+
+                                    }
+
+                                >
+
+                                    <ArrowLeft size={18} />
+
+                                    Previous
+
+                                </Button>
+
+                            </>
+
+                        ) : (
+
+                            <p className="mt-6 text-zinc-500">
+
+                                This is the first lesson.
+
+                            </p>
+
+                        )
+
+                    }
 
                 </div>
 
-            </Card>
+                {/* Next */}
 
-            <Card
+                <div className="rounded-2xl border border-[#322A54] bg-[#171827] p-6">
 
-                hover={!!next}
+                    <p className="text-zinc-500 text-sm">
 
-                className={`p-6 text-right ${
-                    next
-                        ? "cursor-pointer"
-                        : "opacity-50"
-                }`}
+                        Next Lesson
 
-                onClick={next ? onNext : undefined}
+                    </p>
 
-            >
+                    {
 
-                <div className="flex items-center justify-end gap-3">
+                        nextLesson ? (
 
-                    <div>
+                            <>
 
-                        <p className="text-sm text-zinc-500">
+                                <h3 className="mt-3 text-xl font-semibold">
 
-                            Next Lesson
+                                    {nextLesson.title}
 
-                        </p>
+                                </h3>
 
-                        <h3 className="font-semibold mt-1">
+                                <p className="mt-2 text-zinc-500">
 
-                            {next?.title || "No Next Lesson"}
+                                    {chapter.title}
 
-                        </h3>
+                                </p>
 
-                    </div>
+                                <Button
 
-                    <ChevronRight />
+                                    className="mt-6"
+
+                                    onClick={() =>
+
+                                        navigate(`/lessons/${nextLesson.id}`)
+
+                                    }
+
+                                >
+
+                                    Next
+
+                                    <ArrowRight size={18} />
+
+                                </Button>
+
+                            </>
+
+                        ) : (
+
+                            <p className="mt-6 text-zinc-500">
+
+                                You've reached the final lesson.
+
+                            </p>
+
+                        )
+
+                    }
 
                 </div>
 
-            </Card>
+            </div>
 
-        </div>
+        </Card>
 
     );
 
