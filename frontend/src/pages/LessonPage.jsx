@@ -6,13 +6,12 @@ import Loader from "../components/common/Loader";
 
 import LessonHero from "../components/lesson/LessonHero";
 import LessonSidebar from "../components/lesson/LessonSidebar";
-import MarkdownRenderer from "../components/lesson/MarkdownRenderer";
 import MentorChat from "../components/lesson/MentorChat";
+import LessonSection from "../components/lesson/LessonSection";
+import ReadingProgress from "../components/lesson/ReadingProgress";
 
 import useLesson from "../hooks/useLesson";
 import useMentor from "../hooks/useMentor";
-
-import ReadingProgress from "../components/lesson/ReadingProgress";
 
 export default function LessonPage() {
 
@@ -29,16 +28,21 @@ export default function LessonPage() {
         ask,
     } = useMentor(lessonId);
 
-    if (loading)
+    if (loading) {
+
         return <Loader />;
 
-    if (!lesson)
+    }
+
+    if (!lesson) {
+
         return (
 
             <AppLayout>
 
                 <ReadingProgress />
-                <div className="flex justify-center items-center h-[70vh]">
+
+                <div className="flex items-center justify-center h-[70vh]">
 
                     <h1 className="text-3xl font-bold">
 
@@ -51,6 +55,8 @@ export default function LessonPage() {
             </AppLayout>
 
         );
+
+    }
 
     let lessonData;
 
@@ -90,6 +96,8 @@ export default function LessonPage() {
 
             <div className="max-w-[1600px] mx-auto">
 
+                {/* Hero */}
+
                 <LessonHero
 
                     lesson={lesson}
@@ -98,9 +106,11 @@ export default function LessonPage() {
 
                 />
 
+                {/* Main Layout */}
+
                 <div className="grid grid-cols-12 gap-8 mt-8">
 
-                    {/* LEFT */}
+                    {/* LEFT CONTENT */}
 
                     <div className="col-span-8">
 
@@ -108,121 +118,19 @@ export default function LessonPage() {
 
                             {(lessonData.content || []).map((section, index) => (
 
-                                <div
+                                <LessonSection
 
                                     key={index}
 
-                                    className="rounded-[28px] bg-[#171827] border border-[#322A54] p-8"
+                                    section={section}
 
-                                >
-
-                                    <h2 className="text-3xl font-bold text-violet-300 mb-6">
-
-                                        {section.section}
-
-                                    </h2>
-
-                                    {section.text && (
-
-                                        <MarkdownRenderer
-
-                                            content={section.text}
-
-                                        />
-
-                                    )}
-
-                                    {section.objectives && (
-
-                                        <ul className="list-disc ml-6 mt-6 space-y-3">
-
-                                            {section.objectives.map((item, i) => (
-
-                                                <li key={i}>
-
-                                                    {item}
-
-                                                </li>
-
-                                            ))}
-
-                                        </ul>
-
-                                    )}
-
-                                    {section.points && (
-
-                                        <ul className="list-disc ml-6 mt-6 space-y-3">
-
-                                            {section.points.map((item, i) => (
-
-                                                <li key={i}>
-
-                                                    {item}
-
-                                                </li>
-
-                                            ))}
-
-                                        </ul>
-
-                                    )}
-
-                                    {section.code && (
-
-                                        <div className="mt-8">
-
-                                            <MarkdownRenderer
-
-                                                content={`\`\`\`java
-${section.code}
-\`\`\``}
-
-                                            />
-
-                                        </div>
-
-                                    )}
-
-                                    {section.questions && (
-
-                                        <div className="space-y-5 mt-8">
-
-                                            {section.questions.map((question, i) => (
-
-                                                <div
-
-                                                    key={i}
-
-                                                    className="rounded-2xl border border-[#322A54] bg-[#1A1C2D] p-5"
-
-                                                >
-
-                                                    <h3 className="font-semibold text-yellow-400">
-
-                                                        Question {i + 1}
-
-                                                    </h3>
-
-                                                    <p className="mt-3 text-zinc-300">
-
-                                                        {question}
-
-                                                    </p>
-
-                                                </div>
-
-                                            ))}
-
-                                        </div>
-
-                                    )}
-
-                                </div>
+                                />
 
                             ))}
 
                         </div>
+
+                        {/* AI Mentor */}
 
                         <div className="mt-10">
 
@@ -240,7 +148,7 @@ ${section.code}
 
                     </div>
 
-                    {/* RIGHT */}
+                    {/* RIGHT SIDEBAR */}
 
                     <div className="col-span-4">
 
