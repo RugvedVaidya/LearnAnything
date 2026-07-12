@@ -17,7 +17,7 @@ import useNavigation from "../hooks/useNavigation";
 import LessonNavigation from "../components/lesson/LessonNavigation";
 
 import { useEffect } from "react";
-import { useProgress } from "../hooks/useProgress";
+import useProgress from "../hooks/useProgress";
 import LessonCompletion from "../components/lesson/LessonCompletion";
 
 export default function LessonPage() {
@@ -184,7 +184,7 @@ export default function LessonPage() {
                                 onComplete={() => completeLesson(lessonId)}
 
                             />
-                            
+
                             <LessonNavigation
 
                                 navigation={navigation}
