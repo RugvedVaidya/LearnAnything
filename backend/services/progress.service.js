@@ -86,7 +86,7 @@ export const completeLesson = async (userId, lessonId) => {
 
 export const getLessonProgress = async (userId, lessonId) => {
 
-    const progress = await prisma.lessonProgress.findUnique({
+    return await prisma.lessonProgress.findUnique({
 
         where: {
 
@@ -101,8 +101,6 @@ export const getLessonProgress = async (userId, lessonId) => {
         },
 
     });
-
-    return progress;
 
 };
 
@@ -240,6 +238,22 @@ export const getCourseProgress = async (userId, courseId) => {
 
             );
 
+    const lessonStatuses = lessons.map((lesson) => {
+
+        const progress = lesson.progress[0];
+
+        return {
+
+            id: lesson.id,
+
+            completed: progress?.completed || false,
+
+            current: currentLesson ? currentLesson.id === lesson.id : false,
+
+        };
+
+    });
+
     return {
 
         totalLessons,
@@ -249,6 +263,8 @@ export const getCourseProgress = async (userId, courseId) => {
         percentage,
 
         currentLesson,
+
+        lessonStatuses,
 
     };
 

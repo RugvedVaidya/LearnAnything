@@ -10,6 +10,7 @@ import CourseStats from "../components/course/CourseStats";
 import CourseSidebar from "../components/course/CourseSidebar";
 
 import useCourse from "../hooks/useCourse";
+import useCourseProgress from "../hooks/useCourseProgress";
 
 export default function CourseDetails() {
 
@@ -21,6 +22,10 @@ export default function CourseDetails() {
         generateChapters,
         generateLessons,
     } = useCourse(courseId);
+
+    const {
+        progress,
+    } = useCourseProgress(courseId);
 
     if (loading) {
         return <Loader />;
@@ -106,6 +111,8 @@ export default function CourseDetails() {
 
                                                 module={module}
 
+                                                progress={progress}
+                                                
                                                 onGenerate={generateChapters}
 
                                                 onGenerateLessons={generateLessons}

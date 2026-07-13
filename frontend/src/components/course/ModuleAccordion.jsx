@@ -1,4 +1,7 @@
 import { useState } from "react";
+
+import { motion, AnimatePresence } from "framer-motion";
+
 import {
     ChevronDown,
     ChevronRight,
@@ -6,17 +9,17 @@ import {
     BookOpen,
     Sparkles,
     PlayCircle,
+    CheckCircle2,
+    Circle,
 } from "lucide-react";
 
-import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-
-import Card from "../ui/Card";
-import Button from "../ui/Button";
 
 export default function ModuleAccordion({
 
     module,
+
+    progress,
 
     onGenerate,
 
@@ -24,13 +27,13 @@ export default function ModuleAccordion({
 
 }) {
 
+    const navigate = useNavigate();
+
     const [open, setOpen] = useState(false);
 
     const [loadingModule, setLoadingModule] = useState(false);
 
     const [loadingChapter, setLoadingChapter] = useState(null);
-
-    const navigate = useNavigate();
 
     const handleGenerateModule = async () => {
 
@@ -66,91 +69,129 @@ export default function ModuleAccordion({
 
     };
 
+    const getLessonStatus = (lessonId) => {
+
+        if (!progress?.lessonStatuses) {
+
+            return {
+
+                completed: false,
+
+                current: false,
+
+            };
+
+        }
+
+        return (
+
+            progress.lessonStatuses.find(
+
+                lesson => lesson.id === lessonId
+
+            ) || {
+
+                completed: false,
+
+                current: false,
+
+            }
+
+        );
+
+    };
+
     return (
 
-        <Card className="overflow-hidden">
+        <motion.div
 
-            {/* HEADER */}
+            layout
+
+            className="rounded-[30px] overflow-hidden border border-[#2F2A45] bg-[#141520]"
+
+        >
 
             <button
 
                 onClick={() => setOpen(!open)}
 
-                className="w-full p-8 text-left"
+                className="w-full p-7 flex justify-between items-center"
 
             >
 
-                <div className="flex justify-between items-start">
+                <div className="flex items-center gap-5">
 
-                    <div className="flex-1">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 flex items-center justify-center">
+
+                        <BookOpen className="text-white" />
+
+                    </div>
+
+                    <div className="text-left">
 
                         <div className="flex items-center gap-3">
 
-                            <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-500 to-purple-700 flex items-center justify-center">
+                            <h2 className="text-2xl font-bold">
 
-                                <BookOpen size={22} className="text-white" />
+                                Module {module.order}
 
-                            </div>
+                            </h2>
 
-                            <div>
+                            <Sparkles
 
-                                <h2 className="text-2xl font-bold text-white">
+                                size={16}
 
-                                    Module {module.order}
+                                className="text-yellow-400"
 
-                                </h2>
-
-                                <p className="text-zinc-500">
-
-                                    {module.title}
-
-                                </p>
-
-                            </div>
+                            />
 
                         </div>
 
-                        <p className="text-zinc-400 mt-5 leading-7">
+                        <p className="text-lg text-zinc-300 mt-2">
+
+                            {module.title}
+
+                        </p>
+
+                        <p className="text-zinc-500 mt-2">
 
                             {module.description}
 
                         </p>
 
-                        <div className="flex gap-8 mt-6 text-sm text-zinc-400">
+                    </div>
 
-                            <div className="flex items-center gap-2">
+                </div>
 
-                                <Clock3 size={18} />
+                <div className="flex items-center gap-6">
 
-                                {module.estimatedTime} hrs
+                    <div className="text-right">
 
-                            </div>
+                        <div className="flex items-center gap-2 justify-end text-zinc-400">
 
-                            <div className="flex items-center gap-2">
+                            <Clock3 size={18} />
 
-                                <BookOpen size={18} />
-
-                                {module.chapters.length} Chapters
-
-                            </div>
+                            {module.estimatedTime} hrs
 
                         </div>
 
-                    </div>
+                        <p className="text-sm text-zinc-500 mt-2">
 
-                    <div className="ml-8">
+                            {module.chapters.length} Chapters
 
-                        {
-
-                            open
-
-                                ? <ChevronDown size={30} />
-
-                                : <ChevronRight size={30} />
-
-                        }
+                        </p>
 
                     </div>
+
+                    {
+
+                        open
+
+                            ? <ChevronDown />
+
+                            : <ChevronRight />
+
+                    }
 
                 </div>
 
@@ -165,217 +206,349 @@ export default function ModuleAccordion({
                         <motion.div
 
                             initial={{
-                                opacity:0,
-                                height:0,
+
+                                opacity: 0,
+
+                                height: 0,
+
                             }}
 
                             animate={{
-                                opacity:1,
-                                height:"auto",
+
+                                opacity: 1,
+
+                                height: "auto",
+
                             }}
 
                             exit={{
-                                opacity:0,
-                                height:0,
+
+                                opacity: 0,
+
+                                height: 0,
+
                             }}
 
-                            transition={{
-                                duration:.25,
-                            }}
-
-                            className="border-t border-[#322A54]"
+                            className="px-7 pb-7"
 
                         >
 
-                            <div className="p-8">
+                            {
 
-                                {
+                                module.chapters.length === 0 ? (
 
-                                    module.chapters.length === 0 ? (
+                                    <div className="rounded-2xl bg-[#191B29] border border-[#322A54] p-8 text-center">
 
-                                        <div className="rounded-3xl bg-[#171827] border border-[#312A50] p-10 text-center">
+                                        <h3 className="text-xl font-semibold">
 
-                                            <Sparkles
+                                            Generate Module Content
 
-                                                className="mx-auto text-violet-400"
+                                        </h3>
 
-                                                size={44}
+                                        <p className="text-zinc-400 mt-3">
 
-                                            />
+                                            AI will create chapters for this module.
 
-                                            <h3 className="text-2xl font-bold mt-5">
+                                        </p>
 
-                                                Chapters Not Generated
+                                        <button
 
-                                            </h3>
+                                            onClick={handleGenerateModule}
 
-                                            <p className="text-zinc-400 mt-3">
+                                            disabled={loadingModule}
 
-                                                Let AI generate an optimized learning roadmap.
+                                            className="mt-6 px-6 py-3 rounded-xl bg-violet-600 hover:bg-violet-700 transition"
 
-                                            </p>
-
-                                            <Button
-
-                                                loading={loadingModule}
-
-                                                onClick={handleGenerateModule}
-
-                                                className="mt-8"
-
-                                            >
-
-                                                Generate Chapters
-
-                                            </Button>
-
-                                        </div>
-
-                                    ) : (
-
-                                        <div className="space-y-6">
+                                        >
 
                                             {
 
-                                                module.chapters.map((chapter)=>(
+                                                loadingModule
 
-                                                    <Card
+                                                    ? "Generating..."
 
-                                                        key={chapter.id}
+                                                    : "Generate Chapters"
 
-                                                        className="p-6"
+                                            }
 
-                                                    >
+                                        </button>
 
-                                                        <div className="flex justify-between items-start">
+                                    </div>
 
-                                                            <div>
+                                ) : (
 
-                                                                <h3 className="text-xl font-bold">
+                                    <div className="space-y-6">
 
-                                                                    {chapter.order}. {chapter.title}
+                                        {
 
-                                                                </h3>
+                                            module.chapters.map((chapter) => (
 
-                                                                <p className="text-zinc-400 mt-2">
+                                                <div
 
-                                                                    {chapter.description}
+                                                    key={chapter.id}
 
-                                                                </p>
+                                                    className="rounded-2xl border border-[#322A54] bg-[#191B29] p-6"
 
-                                                            </div>
+                                                >
 
-                                                            {
+                                                    <div className="flex justify-between items-start">
 
-                                                                chapter.lessons.length===0 && (
+                                                        <div>
 
-                                                                    <Button
+                                                            <h3 className="text-xl font-semibold">
 
-                                                                        loading={loadingChapter===chapter.id}
+                                                                Chapter {chapter.order}
 
-                                                                        onClick={()=>
+                                                            </h3>
 
-                                                                            handleGenerateLessons(chapter.id)
+                                                            <p className="text-lg mt-2">
 
-                                                                        }
+                                                                {chapter.title}
 
-                                                                    >
+                                                            </p>
 
-                                                                        Generate Lessons
+                                                            <p className="text-zinc-500 mt-2">
 
-                                                                    </Button>
+                                                                {chapter.description}
 
-                                                                )
-
-                                                            }
+                                                            </p>
 
                                                         </div>
 
                                                         {
 
-                                                            chapter.lessons.length>0 && (
+                                                            chapter.lessons.length === 0 && (
 
-                                                                <div className="mt-6 space-y-3">
+                                                                <button
+
+                                                                    onClick={() => handleGenerateLessons(chapter.id)}
+
+                                                                    disabled={loadingChapter === chapter.id}
+
+                                                                    className="px-5 py-2 rounded-xl bg-green-600 hover:bg-green-700"
+
+                                                                >
 
                                                                     {
 
-                                                                        chapter.lessons.map((lesson)=>(
+                                                                        loadingChapter === chapter.id
 
-                                                                            <motion.div
+                                                                            ? "Generating..."
 
-                                                                                whileHover={{
-                                                                                    x:5,
-                                                                                }}
-
-                                                                                key={lesson.id}
-
-                                                                                onClick={()=>navigate(`/lessons/${lesson.id}`)}
-
-                                                                                className="cursor-pointer rounded-2xl bg-[#171827] border border-[#322A54] p-5 hover:border-violet-500 transition"
-
-                                                                            >
-
-                                                                                <div className="flex justify-between items-center">
-
-                                                                                    <div className="flex items-center gap-3">
-
-                                                                                        <PlayCircle
-
-                                                                                            size={20}
-
-                                                                                            className="text-violet-400"
-
-                                                                                        />
-
-                                                                                        <h4 className="font-semibold">
-
-                                                                                            {lesson.order}. {lesson.title}
-
-                                                                                        </h4>
-
-                                                                                    </div>
-
-                                                                                    <span className="text-sm text-zinc-500">
-
-                                                                                        {lesson.readingTime} min
-
-                                                                                    </span>
-
-                                                                                </div>
-
-                                                                                <p className="text-zinc-400 mt-3">
-
-                                                                                    {lesson.summary}
-
-                                                                                </p>
-
-                                                                            </motion.div>
-
-                                                                        ))
+                                                                            : "Generate Lessons"
 
                                                                     }
 
-                                                                </div>
+                                                                </button>
 
                                                             )
 
                                                         }
 
-                                                    </Card>
+                                                    </div>
 
-                                                ))
+                                                    {
 
-                                            }
+                                                        chapter.lessons.length > 0 && (
 
-                                        </div>
+                                                            <div className="mt-6 space-y-4">
+                                        {
 
-                                    )
+                                            chapter.lessons.map((lesson) => {
 
-                                }
+                                                const status = getLessonStatus(lesson.id);
 
-                            </div>
+                                                return (
 
-                        </motion.div>
+                                                    <motion.div
+
+                                                        whileHover={{
+                                                            x: 5,
+                                                        }}
+
+                                                        key={lesson.id}
+
+                                                        onClick={() => navigate(`/lessons/${lesson.id}`)}
+
+                                                        className={`
+
+                                                            cursor-pointer
+
+                                                            rounded-2xl
+
+                                                            p-5
+
+                                                            border
+
+                                                            transition-all
+
+                                                            duration-300
+
+                                                            ${
+
+                                                                status.completed
+
+                                                                    ? "border-emerald-500 bg-emerald-500/10"
+
+                                                                    : status.current
+
+                                                                    ? "border-violet-500 bg-violet-500/10"
+
+                                                                    : "border-[#322A54] bg-[#171827] hover:border-violet-500"
+
+                                                            }
+
+                                                        `}
+
+                                                    >
+
+                                                        <div className="flex justify-between items-center">
+
+                                                            <div className="flex items-start gap-4">
+
+                                                                {
+
+                                                                    status.completed ? (
+
+                                                                        <CheckCircle2
+
+                                                                            size={22}
+
+                                                                            className="text-emerald-400 mt-1"
+
+                                                                        />
+
+                                                                    )
+
+                                                                    : status.current ? (
+
+                                                                        <PlayCircle
+
+                                                                            size={22}
+
+                                                                            className="text-violet-400 mt-1"
+
+                                                                        />
+
+                                                                    )
+
+                                                                    : (
+
+                                                                        <Circle
+
+                                                                            size={18}
+
+                                                                            className="text-zinc-500 mt-1"
+
+                                                                        />
+
+                                                                    )
+
+                                                                }
+
+                                                                <div>
+
+                                                                    <h4 className="font-semibold text-white">
+
+                                                                        Lesson {lesson.order}: {lesson.title}
+
+                                                                    </h4>
+
+                                                                    <p className="text-zinc-400 mt-2">
+
+                                                                        {lesson.summary}
+
+                                                                    </p>
+
+                                                                </div>
+
+                                                            </div>
+
+                                                            <div className="text-right">
+
+                                                                <div className="flex items-center gap-2 justify-end text-zinc-400">
+
+                                                                    <Clock3 size={16} />
+
+                                                                    {lesson.readingTime} min
+
+                                                                </div>
+
+                                                                <p
+
+                                                                    className={`
+
+                                                                        mt-3
+
+                                                                        text-xs
+
+                                                                        font-semibold
+
+                                                                        ${
+
+                                                                            status.completed
+
+                                                                                ? "text-emerald-400"
+
+                                                                                : status.current
+
+                                                                                ? "text-violet-400"
+
+                                                                                : "text-zinc-500"
+
+                                                                        }
+
+                                                                    `}
+
+                                                                >
+
+                                                                    {
+
+                                                                        status.completed
+
+                                                                            ? "✓ Completed"
+
+                                                                            : status.current
+
+                                                                            ? "▶ Continue"
+
+                                                                            : "Upcoming"
+
+                                                                    }
+
+                                                                </p>
+
+                                                            </div>
+
+                                                        </div>
+
+                                                    </motion.div>
+
+                                                );
+
+                                            })
+
+                                        }
+
+                                    </div>
+
+                                )
+
+                            }
+
+                        </div>
+
+                    ))
+
+                }
+
+            </div>
+
+        )
+
+    }
+
+</motion.div>
 
                     )
 
@@ -383,7 +556,7 @@ export default function ModuleAccordion({
 
             </AnimatePresence>
 
-        </Card>
+        </motion.div>
 
     );
 
