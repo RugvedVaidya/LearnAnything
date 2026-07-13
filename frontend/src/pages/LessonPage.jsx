@@ -40,12 +40,13 @@ export default function LessonPage() {
     } = useNavigation(lessonId);
 
     const {
+        progress,
+
+        loading: progressLoading,
 
         openLesson,
 
         completeLesson,
-
-        loading: progressLoading,
 
     } = useProgress();
 
@@ -178,6 +179,7 @@ export default function LessonPage() {
                             />
 
                             <LessonCompletion
+                                progress = {progress}
 
                                 loading={progressLoading}
 

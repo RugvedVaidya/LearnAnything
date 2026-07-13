@@ -11,3 +11,9 @@ export const completeLesson = (lessonId) => {
     return api.post(`/progress/complete/${lessonId}`);
 
 };
+
+export const getProgress = (lessonId) => {
+
+    return api.get(`/progress/${lessonId}`);
+
+};

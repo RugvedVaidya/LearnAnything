@@ -3,11 +3,9 @@ import { CheckCircle } from "lucide-react";
 import Button from "../ui/Button";
 
 export default function LessonCompletion({
-
+    progress,
     onComplete,
-
     loading,
-
 }) {
 
     return (
@@ -36,13 +34,33 @@ export default function LessonCompletion({
 
                     loading={loading}
 
+                    disabled={progress?.completed}
+
                     onClick={onComplete}
+
+                    className={
+
+                        progress?.completed
+
+                            ? "!bg-emerald-600 hover:!bg-emerald-600 !text-white"
+
+                            : ""
+
+                    }
 
                 >
 
                     <CheckCircle size={18} />
 
-                    Mark Lesson Complete
+                    {
+
+                        progress?.completed
+
+                            ? "✓ Lesson Completed"
+
+                            : "Mark Lesson Complete"
+
+                    }
 
                 </Button>
 

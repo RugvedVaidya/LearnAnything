@@ -83,3 +83,25 @@ export const completeLesson = async (userId, lessonId) => {
     return progress;
 
 };
+
+export const getLessonProgress = async (userId, lessonId) => {
+
+    const progress = await prisma.lessonProgress.findUnique({
+
+        where: {
+
+            userId_lessonId: {
+
+                userId,
+
+                lessonId,
+
+            },
+
+        },
+
+    });
+
+    return progress;
+
+};

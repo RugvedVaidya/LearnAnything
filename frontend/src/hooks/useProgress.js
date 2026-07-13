@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 import {
-
     markLessonOpened,
-
     markLessonCompleted,
-
+    fetchLessonProgress,
 } from "../services/progress.service";
 
 export default function useProgress() {
+
+    const [progress, setProgress] = useState(null);
 
     const [loading, setLoading] = useState(false);
 
@@ -18,9 +18,11 @@ export default function useProgress() {
 
             await markLessonOpened(lessonId);
 
-        }
+            const data = await fetchLessonProgress(lessonId);
 
-        catch (error) {
+            setProgress(data);
+
+        } catch (error) {
 
             console.error(error);
 
@@ -34,17 +36,15 @@ export default function useProgress() {
 
             setLoading(true);
 
-            await markLessonCompleted(lessonId);
+            const updated = await markLessonCompleted(lessonId);
 
-        }
+            setProgress(updated);
 
-        catch (error) {
+        } catch (error) {
 
             console.error(error);
 
-        }
-
-        finally {
+        } finally {
 
             setLoading(false);
 
@@ -53,6 +53,8 @@ export default function useProgress() {
     };
 
     return {
+
+        progress,
 
         loading,
 
