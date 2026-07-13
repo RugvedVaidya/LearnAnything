@@ -35,7 +35,7 @@ export default function QuizPage() {
 
             const response = await getCourses();
 
-            setCourses(response.data);
+            setCourses(response.data || []);
 
         }
 
