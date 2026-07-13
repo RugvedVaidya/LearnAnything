@@ -14,6 +14,7 @@ import QuickActions from "../components/dashboard/QuickActions";
 import AchievementCard from "../components/dashboard/AchievementCard";
 
 import useCourses from "../hooks/useCourses";
+import useDashboard from "../hooks/useDashboard";
 
 export default function Dashboard() {
 
@@ -34,7 +35,15 @@ export default function Dashboard() {
 
     };
 
-    if (loading) {
+    const {
+
+        dashboard,
+
+        loading: dashboardLoading,
+
+    } = useDashboard();
+
+    if (loading || dashboardLoading) {
 
         return <Loader />;
 
@@ -66,7 +75,7 @@ export default function Dashboard() {
 
                     <StatsGrid
 
-                        courses={courses}
+                        dashboard = {dashboard}
 
                     />
 
