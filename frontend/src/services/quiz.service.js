@@ -1,18 +1,19 @@
 import {
-
-    generateChapterQuiz,
-
-    generateCourseQuiz,
-
-    submitQuiz,
-
-    getQuizHistory,
-
-    getQuizAttempt,
-
     getQuizCourses,
-
+    generateChapterQuiz,
+    generateCourseQuiz,
+    submitQuiz,
+    getQuizHistory,
+    getQuizAttempt,
 } from "../api/quiz.api";
+
+export const fetchQuizCourses = async () => {
+
+    const response = await getQuizCourses();
+
+    return response.data.data;
+
+};
 
 export const createChapterQuiz = async (chapterId) => {
 
@@ -30,21 +31,9 @@ export const createCourseQuiz = async (courseId) => {
 
 };
 
-export const submitQuizAnswers = async (
+export const submitQuizAnswers = async (quizId, answers) => {
 
-    quizId,
-
-    answers
-
-) => {
-
-    const response = await submitQuiz(
-
-        quizId,
-
-        answers
-
-    );
+    const response = await submitQuiz(quizId, answers);
 
     return response.data.data;
 
@@ -61,14 +50,6 @@ export const fetchQuizHistory = async () => {
 export const fetchQuizAttempt = async (attemptId) => {
 
     const response = await getQuizAttempt(attemptId);
-
-    return response.data.data;
-
-};
-
-export const fetchQuizCourses = async () => {
-
-    const response = await getQuizCourses();
 
     return response.data.data;
 
