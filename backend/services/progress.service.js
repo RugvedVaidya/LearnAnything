@@ -105,3 +105,151 @@ export const getLessonProgress = async (userId, lessonId) => {
     return progress;
 
 };
+
+export const getCourseProgress = async (userId, courseId) => {
+
+    const course = await prisma.course.findUnique({
+
+        where: {
+
+            id: courseId,
+
+        },
+
+        include: {
+
+            modules: {
+
+                orderBy: {
+
+                    order: "asc",
+
+                },
+
+                include: {
+
+                    chapters: {
+
+                        orderBy: {
+
+                            order: "asc",
+
+                        },
+
+                        include: {
+
+                            lessons: {
+
+                                orderBy: {
+
+                                    order: "asc",
+
+                                },
+
+                                include: {
+
+                                    progress: {
+
+                                        where: {
+
+                                            userId,
+
+                                        },
+
+                                    },
+
+                                },
+
+                            },
+
+                        },
+
+                    },
+
+                },
+
+            },
+
+        },
+
+    });
+
+    if (!course) {
+
+        throw new Error("Course not found.");
+
+    }
+
+    const lessons = [];
+
+    course.modules.forEach((module) => {
+
+        module.chapters.forEach((chapter) => {
+
+            chapter.lessons.forEach((lesson) => {
+
+                lessons.push({
+
+                    ...lesson,
+
+                    module,
+
+                    chapter,
+
+                });
+
+            });
+
+        });
+
+    });
+
+    const totalLessons = lessons.length;
+
+    const completedLessons = lessons.filter(
+
+        lesson =>
+
+            lesson.progress.length > 0 &&
+
+            lesson.progress[0].completed
+
+    ).length;
+
+    const currentLesson =
+
+        lessons.find(
+
+            lesson =>
+
+                lesson.progress.length === 0 ||
+
+                !lesson.progress[0].completed
+
+        ) || null;
+
+    const percentage =
+
+        totalLessons === 0
+
+            ? 0
+
+            : Math.round(
+
+                (completedLessons / totalLessons) * 100
+
+            );
+
+    return {
+
+        totalLessons,
+
+        completedLessons,
+
+        percentage,
+
+        currentLesson,
+
+    };
+
+};

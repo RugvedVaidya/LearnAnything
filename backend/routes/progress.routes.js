@@ -10,6 +10,7 @@ import {
     open,
     complete,
     getProgress,
+    courseProgress
 } from "../controllers/progress.controller.js";
 
 const router = express.Router();
@@ -21,5 +22,7 @@ router.post("/open/:lessonId", open);
 router.post("/complete/:lessonId", complete);
 
 router.get("/:lessonId", getProgress);
+
+router.get("/course/:courseId", courseProgress);
 
 export default router;

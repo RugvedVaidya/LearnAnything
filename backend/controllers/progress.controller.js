@@ -4,6 +4,8 @@ import {
 
     completeLesson,
 
+    getCourseProgress
+
 } from "../services/progress.service.js";
 
 import {
@@ -119,6 +121,48 @@ export const getProgress = async (req, res) => {
             res,
 
             "Progress fetched successfully.",
+
+            progress
+
+        );
+
+    }
+
+    catch (error) {
+
+        return errorResponse(
+
+            res,
+
+            error.message,
+
+            [],
+
+            500
+
+        );
+
+    }
+
+};
+
+export const courseProgress = async (req, res) => {
+
+    try {
+
+        const progress = await getCourseProgress(
+
+            req.user.id,
+
+            req.params.courseId
+
+        );
+
+        return successResponse(
+
+            res,
+
+            "Course progress fetched successfully.",
 
             progress
 

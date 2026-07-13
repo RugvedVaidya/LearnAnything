@@ -9,16 +9,37 @@ import {
 
 import { useNavigate } from "react-router-dom";
 
+import useCourseProgress from "../../hooks/useCourseProgress";
+
 export default function CourseCard({ course }) {
 
     const navigate = useNavigate();
 
-    const progress = 72;
+    const {
+
+        progress,
+
+        loading,
+
+    } = useCourseProgress(course.id);
+
+    const percentage = progress?.percentage ?? 0;
+
+    const completedLessons = progress?.completedLessons ?? 0;
+
+    const totalLessons = progress?.totalLessons ?? 0;
 
     const difficultyColor = {
-        BEGINNER: "bg-green-500/20 text-green-400 border-green-500/30",
-        INTERMEDIATE: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
-        ADVANCED: "bg-red-500/20 text-red-400 border-red-500/30",
+
+        BEGINNER:
+            "bg-green-500/20 text-green-400 border-green-500/30",
+
+        INTERMEDIATE:
+            "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
+
+        ADVANCED:
+            "bg-red-500/20 text-red-400 border-red-500/30",
+
     };
 
     return (
@@ -137,35 +158,43 @@ export default function CourseCard({ course }) {
 
             <div className="p-6">
 
-                <h2 className="
+                <h2
 
-                    text-2xl
+                    className="
 
-                    font-bold
+                        text-2xl
 
-                    text-white
+                        font-bold
 
-                    line-clamp-2
+                        text-white
 
-                ">
+                        line-clamp-2
+
+                    "
+
+                >
 
                     {course.title}
 
                 </h2>
 
-                <p className="
+                <p
 
-                    mt-3
+                    className="
 
-                    text-zinc-400
+                        mt-3
 
-                    leading-relaxed
+                        text-zinc-400
 
-                    line-clamp-3
+                        leading-relaxed
 
-                    min-h-[72px]
+                        line-clamp-3
 
-                ">
+                        min-h-[72px]
+
+                    "
+
+                >
 
                     {course.description}
 
@@ -179,31 +208,43 @@ export default function CourseCard({ course }) {
 
                         <span className="text-zinc-500">
 
-                            Progress
+                            Progress ({completedLessons}/{totalLessons})
 
                         </span>
 
                         <span className="text-violet-400 font-semibold">
 
-                            {progress}%
+                            {
+
+                                loading
+
+                                    ? "..."
+
+                                    : `${percentage}%`
+
+                            }
 
                         </span>
 
                     </div>
 
-                    <div className="
+                    <div
 
-                        mt-2
+                        className="
 
-                        h-2
+                            mt-2
 
-                        rounded-full
+                            h-2
 
-                        bg-zinc-800
+                            rounded-full
 
-                        overflow-hidden
+                            bg-zinc-800
 
-                    ">
+                            overflow-hidden
+
+                        "
+
+                    >
 
                         <div
 
@@ -219,11 +260,15 @@ export default function CourseCard({ course }) {
 
                                 to-purple-400
 
+                                transition-all
+
+                                duration-700
+
                             "
 
                             style={{
 
-                                width: `${progress}%`
+                                width: `${percentage}%`
 
                             }}
 
@@ -235,17 +280,21 @@ export default function CourseCard({ course }) {
 
                 {/* Stats */}
 
-                <div className="
+                <div
 
-                    grid
+                    className="
 
-                    grid-cols-3
+                        grid
 
-                    gap-3
+                        grid-cols-3
 
-                    mt-7
+                        gap-3
 
-                ">
+                        mt-7
+
+                    "
+
+                >
 
                     <div className="flex items-center gap-2 text-zinc-300">
 
@@ -276,11 +325,17 @@ export default function CourseCard({ course }) {
                         <BookOpen size={18}/>
 
                         <span>
+
                             {course.modules.reduce(
+
                                 (total, module) =>
+
                                     total + (module.chapters?.length || 0),
+
                                 0
+
                             )} Chapters
+
                         </span>
 
                     </div>
@@ -289,33 +344,49 @@ export default function CourseCard({ course }) {
 
                 {/* Footer */}
 
-                <div className="
+                <div
 
-                    mt-8
+                    className="
 
-                    pt-5
+                        mt-8
 
-                    border-t
+                        pt-5
 
-                    border-zinc-800
+                        border-t
 
-                    flex
+                        border-zinc-800
 
-                    justify-between
+                        flex
 
-                    items-center
+                        justify-between
 
-                ">
+                        items-center
 
-                    <span className="
+                    "
 
-                        text-violet-400
+                >
 
-                        font-semibold
+                    <span
 
-                    ">
+                        className="
 
-                        Continue Learning
+                            text-violet-400
+
+                            font-semibold
+
+                        "
+
+                    >
+
+                        {
+
+                            percentage === 100
+
+                                ? "Course Completed 🎉"
+
+                                : "Continue Learning"
+
+                        }
 
                     </span>
 
