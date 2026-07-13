@@ -8,6 +8,7 @@ import CourseDetails from "../pages/CourseDetails";
 import LessonPage from "../pages/LessonPage";
 
 import useAuth from "../hooks/useAuth";
+import QuizPage from "../pages/QuizPage";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -78,8 +79,13 @@ export default function AppRoutes() {
                     element={<Navigate to="/" replace />}
                 />
 
-            </Routes>
+                <Route
+                    path="/quiz"
+                    element={<QuizPage />}
+                />
 
+            </Routes>
+            
         </BrowserRouter>
 
     );

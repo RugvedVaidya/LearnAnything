@@ -28,7 +28,9 @@ export default function useQuiz() {
 
             return await createChapterQuiz(chapterId);
 
-        } finally {
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -44,7 +46,9 @@ export default function useQuiz() {
 
             return await createCourseQuiz(courseId);
 
-        } finally {
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -52,13 +56,7 @@ export default function useQuiz() {
 
     };
 
-    const submit = async (
-
-        quizId,
-
-        answers
-
-    ) => {
+    const submit = async (quizId, answers) => {
 
         setLoading(true);
 
@@ -72,7 +70,9 @@ export default function useQuiz() {
 
             );
 
-        } finally {
+        }
+
+        finally {
 
             setLoading(false);
 
@@ -82,7 +82,59 @@ export default function useQuiz() {
 
     const getCourses = async () => {
 
-        return await fetchQuizCourses();
+        setLoading(true);
+
+        try {
+
+            return await fetchQuizCourses();
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    const history = async () => {
+
+        setLoading(true);
+
+        try {
+
+            return await fetchQuizHistory();
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
+    const getAttempt = async (attemptId) => {
+
+        setLoading(true);
+
+        try {
+
+            return await fetchQuizAttempt(
+
+                attemptId
+
+            );
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
 
     };
 
@@ -98,9 +150,9 @@ export default function useQuiz() {
 
         submit,
 
-        fetchQuizHistory,
+        history,
 
-        fetchQuizAttempt,
+        getAttempt,
 
     };
 

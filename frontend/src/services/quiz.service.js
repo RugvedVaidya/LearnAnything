@@ -18,7 +18,7 @@ export const createChapterQuiz = async (chapterId) => {
 
     const response = await generateChapterQuiz(chapterId);
 
-    return response.data;
+    return response.data.data;
 
 };
 
@@ -26,7 +26,7 @@ export const createCourseQuiz = async (courseId) => {
 
     const response = await generateCourseQuiz(courseId);
 
-    return response.data;
+    return response.data.data;
 
 };
 
@@ -46,7 +46,7 @@ export const submitQuizAnswers = async (
 
     );
 
-    return response.data;
+    return response.data.data;
 
 };
 
@@ -54,7 +54,7 @@ export const fetchQuizHistory = async () => {
 
     const response = await getQuizHistory();
 
-    return response.data;
+    return response.data.data;
 
 };
 
@@ -62,7 +62,7 @@ export const fetchQuizAttempt = async (attemptId) => {
 
     const response = await getQuizAttempt(attemptId);
 
-    return response.data;
+    return response.data.data;
 
 };
 
@@ -70,6 +70,6 @@ export const fetchQuizCourses = async () => {
 
     const response = await getQuizCourses();
 
-    return response.data;
+    return response.data.data;
 
 };
