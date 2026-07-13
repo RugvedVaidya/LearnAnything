@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import AppLayout from "../layouts/AppLayout";
 import Loader from "../components/common/Loader";
@@ -10,14 +11,12 @@ import useQuiz from "../hooks/useQuiz";
 export default function QuizPage() {
 
     const {
-
         getCourses,
-
         generateChapter,
-
         generateCourse,
-
     } = useQuiz();
+
+    const navigate = useNavigate();
 
     const [courses, setCourses] = useState([]);
 
@@ -33,9 +32,11 @@ export default function QuizPage() {
 
         try {
 
-            const response = await getCourses();
+            const data = await getCourses();
 
-            setCourses(response.data || []);
+            console.log("Quiz Courses:", data);
+
+            setCourses(data || []);
 
         }
 
@@ -57,11 +58,23 @@ export default function QuizPage() {
 
         try {
 
-            const response = await generateChapter(chapterId);
+            const quiz = await generateChapter(chapterId);
 
-            console.log(response);
+            navigate(
 
-            // navigation comes next
+                `/quiz/${quiz.id}`,
+
+                {
+
+                    state: {
+
+                        quiz,
+
+                    },
+
+                }
+
+            );
 
         }
 
@@ -72,14 +85,28 @@ export default function QuizPage() {
         }
 
     };
-
+    
     const handleCourseQuiz = async (courseId) => {
 
         try {
 
-            const response = await generateCourse(courseId);
+            const quiz = await generateCourse(courseId);
 
-            console.log(response);
+            navigate(
+
+                `/quiz/${quiz.id}`,
+
+                {
+
+                    state: {
+
+                        quiz,
+
+                    },
+
+                }
+
+            );
 
         }
 

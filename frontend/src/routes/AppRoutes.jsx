@@ -10,6 +10,7 @@ import LessonPage from "../pages/LessonPage";
 import useAuth from "../hooks/useAuth";
 import QuizPage from "../pages/QuizPage";
 
+// import QuizAttempt from "../pages/QuizAttempt";
 const ProtectedRoute = ({ children }) => {
 
     const { user, loading } = useAuth();
@@ -84,8 +85,12 @@ export default function AppRoutes() {
                     element={<QuizPage />}
                 />
 
+                {/* <Route
+                    path="/quiz/:quizId"
+                    element={<QuizAttempt />}
+                /> */}
             </Routes>
-            
+
         </BrowserRouter>
 
     );
