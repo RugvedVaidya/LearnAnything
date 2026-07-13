@@ -67,8 +67,7 @@ export default function Dashboard() {
 
                     <ContinueLearning
 
-                        progress={72}
-
+                        dashboard={dashboard}
                         onGenerate={() => setOpen(true)}
 
                     />

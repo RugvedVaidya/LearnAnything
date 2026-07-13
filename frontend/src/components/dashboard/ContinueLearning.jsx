@@ -4,17 +4,25 @@ import {
     PlayCircle,
 } from "lucide-react";
 
+import { useNavigate } from "react-router-dom";
+
 import Card from "../ui/Card";
 import ProgressBar from "../ui/ProgressBar";
 import Button from "../ui/Button";
 
 export default function ContinueLearning({
 
-    progress = 72,
+    dashboard,
 
     onGenerate,
 
 }) {
+
+    const navigate = useNavigate();
+
+    const continueLesson = dashboard?.continueLesson;
+
+    const progress = dashboard?.percentage ?? 0;
 
     return (
 
@@ -32,7 +40,7 @@ export default function ContinueLearning({
 
                     <p className="text-zinc-500 mt-2">
 
-                        Pick up where you left off.
+                        Pick up exactly where you left off.
 
                     </p>
 
@@ -46,53 +54,89 @@ export default function ContinueLearning({
 
             </div>
 
-            {/* Current Course */}
+            {
 
-            <div className="mt-8 rounded-2xl bg-[#1F1A36] border border-[#332C58] p-6">
+                continueLesson ? (
 
-                <div className="flex justify-between items-start">
+                    <div className="mt-8 rounded-2xl bg-[#1F1A36] border border-[#332C58] p-6">
 
-                    <div>
+                        <div className="flex justify-between items-start">
 
-                        <div className="flex items-center gap-2 text-violet-400">
+                            <div>
 
-                            <BookOpen size={18} />
+                                <div className="flex items-center gap-2 text-violet-400">
 
-                            <span className="text-sm font-medium">
+                                    <BookOpen size={18} />
 
-                                Current Course
+                                    <span className="text-sm font-medium">
 
-                            </span>
+                                        {continueLesson.courseTitle}
+
+                                    </span>
+
+                                </div>
+
+                                <h3 className="text-2xl font-bold mt-3">
+
+                                    {continueLesson.lessonTitle}
+
+                                </h3>
+
+                                <p className="text-zinc-400 mt-2">
+
+                                    {continueLesson.moduleTitle}
+
+                                </p>
+
+                                <p className="text-zinc-500 mt-1">
+
+                                    {continueLesson.chapterTitle}
+
+                                </p>
+
+                            </div>
+
+                            <Button
+
+                                onClick={() =>
+
+                                    navigate(`/lessons/${continueLesson.lessonId}`)
+
+                                }
+
+                            >
+
+                                <PlayCircle size={18} />
+
+                                Resume
+
+                            </Button>
 
                         </div>
 
-                        <h3 className="text-2xl font-bold mt-3">
+                    </div>
 
-                            Machine Learning Interview Roadmap
+                ) : (
+
+                    <div className="mt-8 rounded-2xl border border-emerald-600/30 bg-emerald-500/10 p-8 text-center">
+
+                        <h3 className="text-2xl font-bold text-emerald-400">
+
+                            🎉 Congratulations!
 
                         </h3>
 
-                        <p className="text-zinc-400 mt-2">
+                        <p className="text-zinc-400 mt-3">
 
-                            Continue from Module 3 • Neural Networks
+                            You've completed every lesson across all your courses.
 
                         </p>
 
                     </div>
 
-                    <Button>
+                )
 
-                        <PlayCircle size={18} />
-
-                        Continue
-
-                    </Button>
-
-                </div>
-
-            </div>
-
-            {/* Progress */}
+            }
 
             <div className="mt-8">
 
@@ -116,25 +160,47 @@ export default function ContinueLearning({
 
             </div>
 
-            {/* Footer */}
-
             <div className="mt-6 flex justify-between items-center text-sm">
 
                 <span className="text-zinc-500">
 
-                    Estimated time remaining: 12 hrs
+                    {
+
+                        dashboard
+
+                            ? `${dashboard.completedLessons} of ${dashboard.totalLessons} lessons completed`
+
+                            : ""
+
+                    }
 
                 </span>
 
-                <button
-                    className="flex items-center gap-2 text-violet-400 hover:text-violet-300 transition"
-                >
+                {
 
-                    View Full Roadmap
+                    continueLesson && (
 
-                    <ArrowRight size={16} />
+                        <button
 
-                </button>
+                            onClick={() =>
+
+                                navigate(`/courses/${continueLesson.courseId}`)
+
+                            }
+
+                            className="flex items-center gap-2 text-violet-400 hover:text-violet-300 transition"
+
+                        >
+
+                            View Course
+
+                            <ArrowRight size={16} />
+
+                        </button>
+
+                    )
+
+                }
 
             </div>
 
