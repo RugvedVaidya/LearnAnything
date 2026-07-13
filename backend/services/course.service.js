@@ -122,3 +122,63 @@ export const deleteCourse = async (courseId, userId) => {
         message: "Course deleted successfully.",
     };
 };
+
+export const getQuizCourses = async (userId) => {
+
+    return await prisma.course.findMany({
+
+        where: {
+
+            userId,
+
+        },
+
+        orderBy: {
+
+            createdAt: "desc",
+
+        },
+
+        include: {
+
+            modules: {
+
+                orderBy: {
+
+                    order: "asc",
+
+                },
+
+                include: {
+
+                    chapters: {
+
+                        orderBy: {
+
+                            order: "asc",
+
+                        },
+
+                        select: {
+
+                            id: true,
+
+                            title: true,
+
+                            description: true,
+
+                            order: true,
+
+                        },
+
+                    },
+
+                },
+
+            },
+
+        },
+
+    });
+
+};
