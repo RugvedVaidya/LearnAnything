@@ -20,6 +20,6 @@ router.use("/courses", courseRoutes);
 router.use("/navigation", navigationRoutes);
 router.use("/progress", progressRoutes);
 router.use("/dashboard", dashboardRoutes);
-router.user("/quizzes", quizRoutes);
+router.use("/quizzes", quizRoutes);
 
 export default router;

@@ -1,4 +1,4 @@
-import openai from "../../config/openai.js";
+import { callLLM } from "./llm.service.js";
 
 import { chapterQuizPrompt } from "../../prompts/quiz/chapterQuiz.prompt.js";
 import { courseQuizPrompt } from "../../prompts/quiz/courseQuiz.prompt.js";
@@ -24,44 +24,17 @@ export const generateQuiz = async ({
 
     }
 
-    const response = await openai.chat.completions.create({
-
-        model: "gpt-4.1",
-
-        temperature: 0.9,
-
-        response_format: {
-            type: "json_object",
-        },
-
-        messages: [
-
-            {
-                role: "system",
-                content:
-                    "You are an expert educator who generates high-quality quizzes.",
-            },
-
-            {
-                role: "user",
-                content: prompt,
-            },
-
-        ],
-
-    });
+    const response = await callLLM(prompt);
 
     let parsed;
 
     try {
 
-        parsed = JSON.parse(
+        parsed = JSON.parse(response);
 
-            response.choices[0].message.content
+    } catch (error) {
 
-        );
-
-    } catch {
+        console.error(response);
 
         throw new Error("AI returned invalid JSON.");
 
@@ -90,7 +63,7 @@ export const generateQuiz = async ({
         if (!question.question) {
 
             throw new Error(
-                `Question ${index + 1} is missing text.`
+                `Question ${index + 1} is missing.`
             );
 
         }
@@ -117,7 +90,7 @@ export const generateQuiz = async ({
         ) {
 
             throw new Error(
-                `Question ${index + 1} has invalid correct answer index.`
+                `Question ${index + 1} has invalid answer index.`
             );
 
         }
@@ -131,7 +104,7 @@ export const generateQuiz = async ({
         }
 
     });
-
+    
     return parsed.questions;
 
 };
