@@ -309,7 +309,7 @@ export const submitQuiz = async (
         const selected = answers[question.id];
 
         const isCorrect =
-            Number(selected) === question.correctAnswer;
+            Number(selected) === Number(question.correctAnswer);
 
         if (isCorrect) {
 
