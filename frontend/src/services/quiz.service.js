@@ -5,6 +5,7 @@ import {
     submitQuiz,
     getQuizHistory,
     getQuizAttempt,
+    getQuiz,
 } from "../api/quiz.api";
 
 export const fetchQuizCourses = async () => {

@@ -44,7 +44,23 @@ export default function QuizAttempt() {
         try {
 
             const data = await getQuiz(quizId);
+            data.questions = data.questions.map((q) => ({
 
+                ...q,
+
+                options: [
+
+                    q.optionA,
+
+                    q.optionB,
+
+                    q.optionC,
+
+                    q.optionD,
+
+                ],
+
+            }));
             setQuiz(data);
 
         }
@@ -134,6 +150,9 @@ export default function QuizAttempt() {
                 answers
 
             );
+
+            console.log("Submit Result:", result);
+console.log("Attempt ID:", result.attemptId);
 
             navigate(
 

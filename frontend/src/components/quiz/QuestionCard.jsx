@@ -18,11 +18,23 @@ export default function QuestionCard({
 
     }
 
+    const options = [
+
+        question.optionA,
+
+        question.optionB,
+
+        question.optionC,
+
+        question.optionD,
+
+    ];
+
     return (
 
         <div className="rounded-[30px] border border-[#2F2A45] bg-[#171827] p-8">
 
-            {/* Question */}
+            {/* Difficulty */}
 
             <div className="mb-8">
 
@@ -38,11 +50,19 @@ export default function QuestionCard({
 
                 </h2>
 
-                <p className="mt-3 text-zinc-400">
+                {
 
-                    Topic: {question.topic}
+                    question.topic && (
 
-                </p>
+                        <p className="mt-3 text-zinc-400">
+
+                            Topic: {question.topic}
+
+                        </p>
+
+                    )
+
+                }
 
             </div>
 
@@ -52,7 +72,7 @@ export default function QuestionCard({
 
                 {
 
-                    question.options.map((option, index) => (
+                    options.map((option, index) => (
 
                         <OptionCard
 

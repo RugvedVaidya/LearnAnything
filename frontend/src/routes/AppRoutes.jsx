@@ -11,7 +11,7 @@ import useAuth from "../hooks/useAuth";
 import QuizPage from "../pages/QuizPage";
 
 import QuizAttempt from "../pages/QuizAttempt";
-// import QuizeResult from "../pages/QuizResult";
+import QuizResult from "../pages/QuizResult";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -98,14 +98,14 @@ export default function AppRoutes() {
                     </ProtectedRoute>}
                 />
 
-                {/* <Route
+                <Route
     path="/quiz/result/:attemptId"
     element={
         <ProtectedRoute>
             <QuizResult />
         </ProtectedRoute>
     }
-/> */}
+/>
             </Routes>
 
         </BrowserRouter>
