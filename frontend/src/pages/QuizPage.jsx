@@ -7,6 +7,7 @@ import Loader from "../components/common/Loader";
 import QuizCourseCard from "../components/quiz/QuizCourseCard";
 
 import useQuiz from "../hooks/useQuiz";
+import QuizHistorySection from "../components/quiz/QuizHistorySection";
 
 export default function QuizPage() {
 
@@ -201,7 +202,7 @@ navigate(
                     )
 
                 }
-
+                <QuizHistorySection/>
             </div>
 
         </AppLayout>
