@@ -14,6 +14,8 @@ import {
 
     fetchQuizCourses,
 
+    fetchQuiz,
+
 } from "../services/quiz.service";
 
 export default function useQuiz() {
@@ -138,6 +140,24 @@ export default function useQuiz() {
 
     };
 
+    const getQuiz = async (quizId) => {
+
+        setLoading(true);
+
+        try {
+
+            return await fetchQuiz(quizId);
+
+        }
+
+        finally {
+
+            setLoading(false);
+
+        }
+
+    };
+
     return {
 
         loading,
@@ -154,6 +174,7 @@ export default function useQuiz() {
 
         getAttempt,
 
+        getQuiz,
     };
 
 }

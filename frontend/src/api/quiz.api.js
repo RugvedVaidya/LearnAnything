@@ -41,3 +41,9 @@ export const getQuizCourses = () => {
     return api.get("/quizzes");
 
 };
+
+export const getQuiz = (quizId) => {
+
+    return api.get(`/quizzes/${quizId}`);
+
+};

@@ -10,7 +10,9 @@ import LessonPage from "../pages/LessonPage";
 import useAuth from "../hooks/useAuth";
 import QuizPage from "../pages/QuizPage";
 
-// import QuizAttempt from "../pages/QuizAttempt";
+import QuizAttempt from "../pages/QuizAttempt";
+// import QuizeResult from "../pages/QuizResult";
+
 const ProtectedRoute = ({ children }) => {
 
     const { user, loading } = useAuth();
@@ -82,13 +84,28 @@ export default function AppRoutes() {
 
                 <Route
                     path="/quiz"
-                    element={<QuizPage />}
+                    element={
+                    <ProtectedRoute>
+                    <QuizPage />
+                    </ProtectedRoute>}
+                />
+
+                <Route
+                    path="/quiz/:quizId"
+                    element={
+                    <ProtectedRoute>
+                    <QuizAttempt />
+                    </ProtectedRoute>}
                 />
 
                 {/* <Route
-                    path="/quiz/:quizId"
-                    element={<QuizAttempt />}
-                /> */}
+    path="/quiz/result/:attemptId"
+    element={
+        <ProtectedRoute>
+            <QuizResult />
+        </ProtectedRoute>
+    }
+/> */}
             </Routes>
 
         </BrowserRouter>

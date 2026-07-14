@@ -56,35 +56,37 @@ export default function QuizPage() {
 
     const handleChapterQuiz = async (chapterId) => {
 
-        try {
+    console.log("Page received:", chapterId);
 
-            const quiz = await generateChapter(chapterId);
+    try {
 
-            navigate(
+        const quiz = await generateChapter(chapterId);
 
-                `/quiz/${quiz.id}`,
+console.log("QUIZ RECEIVED");
+console.log(quiz);
 
-                {
+alert("Quiz Generated!");
 
-                    state: {
+navigate(
+    `/quiz/${quiz.id}`,
+    {
+        state: {
+            quiz,
+        },
+    }
+);
 
-                        quiz,
+        console.log("Quiz:", quiz);
 
-                    },
+    }
 
-                }
+    catch (error) {
 
-            );
+        console.error(error);
 
-        }
+    }
 
-        catch (error) {
-
-            console.error(error);
-
-        }
-
-    };
+};
     
     const handleCourseQuiz = async (courseId) => {
 

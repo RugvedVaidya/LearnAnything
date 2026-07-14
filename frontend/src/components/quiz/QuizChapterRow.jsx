@@ -35,18 +35,18 @@ export default function QuizChapterRow({
             </div>
 
             <button
+    onClick={() => {
 
-                onClick={()=>onStart(chapter.id)}
+        console.log("Start Quiz clicked:", chapter.id);
 
-                className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 transition flex items-center gap-2"
+        onStart(chapter.id);
 
-            >
-
-                <PlayCircle size={18}/>
-
-                Start Quiz
-
-            </button>
+    }}
+    className="px-5 py-2 rounded-xl bg-violet-600 hover:bg-violet-700 transition flex items-center gap-2"
+>
+    <PlayCircle size={18} />
+    Start Quiz
+</button>
 
         </div>
 

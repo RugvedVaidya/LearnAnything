@@ -73,7 +73,10 @@ export default function QuizCourseCard({
 
                             module={module}
 
-                            onChapterQuiz={onChapterQuiz}
+                            onChapterQuiz={(id) => {
+                                console.log("course received", id);
+                                onChapterQuiz(id);
+                            }}
 
                         />
 

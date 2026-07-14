@@ -14,6 +14,8 @@ import {
 
     courses,
 
+    getQuiz,
+
 } from "../controllers/quiz.controller.js";
 
 import { protect } from "../middleware/auth.middleware.js";
@@ -63,5 +65,11 @@ router.get(
 );
 
 router.get("/", courses);
+
+router.get(
+    "/:quizId",
+    protect,
+    getQuiz
+);
 
 export default router;

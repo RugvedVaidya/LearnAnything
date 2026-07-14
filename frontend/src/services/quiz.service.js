@@ -54,3 +54,11 @@ export const fetchQuizAttempt = async (attemptId) => {
     return response.data.data;
 
 };
+
+export const fetchQuiz = async (quizId) => {
+
+    const response = await getQuiz(quizId);
+
+    return response.data.data;
+
+};

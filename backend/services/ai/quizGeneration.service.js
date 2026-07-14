@@ -23,8 +23,20 @@ export const generateQuiz = async ({
         throw new Error("Invalid quiz type.");
 
     }
+    
+    console.log("====== QUIZ GENERATION START ======");
 
-    const response = await callLLM(prompt);
+console.log("Prompt Length:", prompt.length);
+
+console.log("Calling Gemini...");
+
+const response = await callLLM(prompt);
+
+console.log("Gemini finished.");
+
+console.log(response);
+
+console.log("====== QUIZ GENERATION END ======");
 
     let parsed;
 

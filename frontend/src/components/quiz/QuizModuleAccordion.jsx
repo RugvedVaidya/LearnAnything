@@ -80,7 +80,10 @@ export default function QuizModuleAccordion({
 
                                 chapter={chapter}
 
-                                onStart={onChapterQuiz}
+                                onStart={(id) => {
+                                    console.log("module received", id);
+                                    onChapterQuiz(id);
+                                }}
 
                             />
 

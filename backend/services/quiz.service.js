@@ -4,12 +4,12 @@ import { generateQuiz } from "./ai/quizGeneration.service.js";
 
 export const generateChapterQuiz = async (chapterId) => {
 
+    console.log("loading chapter...");
+
     const chapter = await prisma.chapter.findUnique({
 
         where: {
-
             id: chapterId,
-
         },
 
         include: {
@@ -38,6 +38,9 @@ export const generateChapterQuiz = async (chapterId) => {
 
     });
 
+    console.log("chapter loaded");
+    console.log("calling api...");
+
     if (!chapter) {
 
         throw new Error("Chapter not found.");
@@ -46,21 +49,29 @@ export const generateChapterQuiz = async (chapterId) => {
 
     const questions = await generateQuiz({
 
-        type: "CHAPTER",
+    type: "CHAPTER",
 
-        data: {
+    data: {
 
-            courseTitle: chapter.module.course.title,
+        courseTitle: chapter.module.course.title,
 
-            moduleTitle: chapter.module.title,
+        moduleTitle: chapter.module.title,
 
-            chapterTitle: chapter.title,
+        chapterTitle: chapter.title,
 
-            lessons: chapter.lessons,
+        lessons: chapter.lessons.map((lesson) => ({
 
-        },
+            title: lesson.title,
 
-    });
+            summary: lesson.summary,
+
+        })),
+
+    },
+
+});
+
+    console.log("ai returned");
 
     const quiz = await prisma.quiz.create({
 
@@ -111,7 +122,6 @@ export const generateChapterQuiz = async (chapterId) => {
     return quiz;
 
 };
-
 export const generateCourseQuiz = async (courseId) => {
 
     const course = await prisma.course.findUnique({
@@ -152,6 +162,14 @@ export const generateCourseQuiz = async (courseId) => {
 
                                 },
 
+                                select: {
+
+                                    title: true,
+
+                                    summary: true,
+
+                                },
+
                             },
 
                         },
@@ -172,6 +190,30 @@ export const generateCourseQuiz = async (courseId) => {
 
     }
 
+    const simplifiedModules = course.modules.map((module) => ({
+
+        title: module.title,
+
+        description: module.description,
+
+        chapters: module.chapters.map((chapter) => ({
+
+            title: chapter.title,
+
+            description: chapter.description,
+
+            lessons: chapter.lessons.map((lesson) => ({
+
+                title: lesson.title,
+
+                summary: lesson.summary,
+
+            })),
+
+        })),
+
+    }));
+
     const questions = await generateQuiz({
 
         type: "COURSE",
@@ -180,7 +222,7 @@ export const generateCourseQuiz = async (courseId) => {
 
             courseTitle: course.title,
 
-            modules: course.modules,
+            modules: simplifiedModules,
 
         },
 
@@ -485,5 +527,45 @@ export const getQuizCourses = async (userId) => {
         },
 
     });
+
+};
+
+export const getQuizById = async (quizId) => {
+
+    const quiz = await prisma.quiz.findUnique({
+
+        where: {
+
+            id: quizId,
+
+        },
+
+        include: {
+
+            questions: {
+
+                orderBy: {
+
+                    createdAt: "asc",
+
+                },
+
+            },
+
+            chapter: true,
+
+            course: true,
+
+        },
+
+    });
+
+    if (!quiz) {
+
+        throw new Error("Quiz not found.");
+
+    }
+
+    return quiz;
 
 };

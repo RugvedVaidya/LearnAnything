@@ -7,17 +7,17 @@ export const courseQuizPrompt = ({
 
 You are an expert educator and technical interviewer.
 
-Generate a comprehensive final assessment for this course.
+Generate a comprehensive FINAL COURSE ASSESSMENT.
 
-===================================
+====================================
 COURSE
-===================================
+====================================
 
 ${courseTitle}
 
-===================================
-COURSE STRUCTURE
-===================================
+====================================
+COURSE OUTLINE
+====================================
 
 ${modules.map((module, moduleIndex) => `
 
@@ -27,7 +27,7 @@ Title:
 ${module.title}
 
 Description:
-${module.description}
+${module.description ?? "N/A"}
 
 ${module.chapters.map((chapter, chapterIndex) => `
 
@@ -37,7 +37,7 @@ Title:
 ${chapter.title}
 
 Description:
-${chapter.description}
+${chapter.description ?? "N/A"}
 
 ${chapter.lessons.map((lesson, lessonIndex) => `
 
@@ -47,10 +47,7 @@ Title:
 ${lesson.title}
 
 Summary:
-${lesson.summary}
-
-Content:
-${lesson.content}
+${lesson.summary ?? "N/A"}
 
 `).join("\n")}
 
@@ -58,155 +55,111 @@ ${lesson.content}
 
 `).join("\n")}
 
-===================================
+====================================
 QUIZ REQUIREMENTS
-===================================
+====================================
 
 Generate EXACTLY 10 multiple-choice questions.
 
-This is the FINAL COURSE ASSESSMENT.
+This is the FINAL assessment for the ENTIRE course.
 
-Questions should evaluate understanding of the ENTIRE course.
+The quiz should evaluate concepts from ALL modules.
 
-Do NOT concentrate on only one module.
+Distribute questions across the complete course.
 
-Cover every major topic.
+Do NOT focus on a single module.
 
-Every module should contribute questions.
+Avoid asking duplicate concepts.
 
-Avoid duplicate concepts.
+Questions should test understanding rather than memorization.
 
-Questions should require reasoning rather than memorization.
+====================================
+DIFFICULTY DISTRIBUTION
+====================================
 
-===================================
-DIFFICULTY
-===================================
+• 3 EASY
 
-Generate
+• 5 MEDIUM
 
-3 EASY
+• 2 HARD
 
-5 MEDIUM
-
-2 HARD
-
-===================================
+====================================
 QUESTION TYPES
-===================================
+====================================
 
-Include a mix of:
+Include a healthy mix of:
 
-• Conceptual questions
+• Conceptual
 
-• Practical questions
+• Scenario Based
 
-• Code understanding questions (if applicable)
+• Practical Reasoning
 
-• Scenario-based questions
+• Code Understanding (if applicable)
 
-• Best-practice questions
+• Best Practices
 
 Avoid:
 
-• True/False
+• True / False
 
-• Multiple correct answers
+• Multiple Correct Answers
 
 • Fill in the blanks
 
-===================================
+====================================
 OPTIONS
-===================================
+====================================
 
-Every question must contain EXACTLY four options.
+Every question MUST contain EXACTLY four options.
 
-Shuffle the correct answer.
+Only ONE option is correct.
 
-Never always keep Option A as correct.
+Shuffle the correct option.
 
-===================================
+====================================
 IMPORTANT
-===================================
+====================================
 
-The learner may already have attempted previous quizzes.
+Assume the learner has attempted previous quizzes.
 
-Generate a NEW assessment.
+Generate NEW questions.
 
-Avoid repeating common interview questions.
+Avoid repeating previous questions.
 
-Avoid repeating previous quiz questions.
+1-2 similar questions are acceptable.
 
-It is acceptable if 1 or 2 questions resemble previous quizzes.
+Remaining questions should be different.
 
-The remaining questions must be different.
-
-===================================
-FOR EVERY QUESTION RETURN
-===================================
-
-Question
-
-4 options
-
-Correct Answer Index
-
-Difficulty
-
-Topic
-
-Explanation
-
-Explanation should teach the learner why the answer is correct.
-
-===================================
-OUTPUT
-===================================
+====================================
+RETURN FORMAT
+====================================
 
 Return ONLY valid JSON.
 
-Do NOT wrap inside markdown.
+Do NOT wrap in markdown.
 
-Do NOT explain anything.
-
-Return EXACTLY this format.
+Schema:
 
 {
-
     "questions":[
-
         {
-
             "question":"",
-
             "options":[
-
                 "",
-
                 "",
-
                 "",
-
                 ""
-
             ],
-
             "correctAnswer":0,
-
             "difficulty":"MEDIUM",
-
             "topic":"",
-
             "explanation":""
-
         }
-
     ]
-
 }
 
 Return EXACTLY 10 questions.
-
-Return ONLY JSON.
 
 `;
 

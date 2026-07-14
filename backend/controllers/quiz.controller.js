@@ -5,6 +5,7 @@ import {
     getQuizHistory,
     getAttempt,
     getQuizCourses,
+    getQuizById,
 } from "../services/quiz.service.js";
 
 import {
@@ -247,6 +248,40 @@ export const courses = async (req, res) => {
             500
 
         );
+
+    }
+
+};
+
+export const getQuiz = async (req, res) => {
+
+    try {
+
+        const quiz = await getQuizById(
+
+            req.params.quizId
+
+        );
+
+        res.status(200).json({
+
+            success: true,
+
+            data: quiz,
+
+        });
+
+    }
+
+    catch (error) {
+
+        res.status(404).json({
+
+            success: false,
+
+            message: error.message,
+
+        });
 
     }
 

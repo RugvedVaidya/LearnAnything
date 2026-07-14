@@ -9,7 +9,7 @@ export const chapterQuizPrompt = ({
 
 You are an expert educator and technical interviewer.
 
-Generate a high-quality quiz based ONLY on the learning material provided.
+Generate a high-quality quiz based ONLY on the learning material below.
 
 ==========================
 COURSE
@@ -34,8 +34,8 @@ LESSONS
 ==========================
 
 ${lessons
-    .map(
-        (lesson, index) => `
+        .map(
+            (lesson, index) => `
 
 Lesson ${index + 1}
 
@@ -45,12 +45,9 @@ ${lesson.title}
 Summary:
 ${lesson.summary}
 
-Content:
-${lesson.content}
-
 `
-    )
-    .join("\n")}
+        )
+        .join("\n")}
 
 ==========================
 QUIZ REQUIREMENTS
@@ -58,120 +55,70 @@ QUIZ REQUIREMENTS
 
 Generate EXACTLY 10 multiple-choice questions.
 
-The quiz must evaluate the learner's understanding of the chapter.
+The quiz must cover every important concept from the chapter.
 
-Do NOT ask trivial definition-based questions only.
+Avoid asking the same concept twice.
 
-Cover every major concept taught in the lessons.
+Mix question styles:
 
-Questions should be evenly distributed across the chapter.
+• Conceptual
+• Scenario Based
+• Practical Reasoning
+• Code Understanding (if applicable)
 
-Avoid asking two questions that test exactly the same idea.
-
-Use Bloom's Taxonomy.
-
-Mix the following difficulty:
+Difficulty Distribution:
 
 • 4 EASY
-
 • 4 MEDIUM
-
 • 2 HARD
 
-Include:
+Every question must have EXACTLY four options.
 
-• Conceptual questions
-
-• Scenario-based questions
-
-• Code understanding questions (if programming chapter)
-
-• Practical reasoning questions
-
-Do NOT use True/False questions.
-
-Do NOT use multiple-correct questions.
-
-Every question MUST have exactly FOUR options.
+Only ONE option is correct.
 
 Shuffle the correct option.
 
-Do not always keep option A correct.
-
 ==========================
-IMPORTANT
+VERY IMPORTANT
 ==========================
 
-Assume this learner may have taken previous quizzes.
+Assume the learner may have attempted previous quizzes.
 
-Generate NEW questions.
+Generate fresh questions.
 
-Avoid repeating common textbook questions.
+Small overlap (1-2 questions) is acceptable.
 
-Focus on concepts that can still assess understanding.
-
-It is acceptable if 1 or 2 questions are similar, but the remaining questions must be different.
+The remaining questions must be different.
 
 ==========================
-FOR EACH QUESTION
+RETURN FORMAT
 ==========================
 
-Return:
+Return ONLY valid JSON.
 
-Question
+Do NOT wrap in markdown.
 
-4 options
-
-Correct Answer Index
-
-Difficulty
-
-Topic
-
-Explanation
-
-Explanation should explain WHY the answer is correct.
-
-==========================
-OUTPUT FORMAT
-==========================
-
-Return ONLY VALID JSON.
-
-Do NOT wrap inside markdown.
-
-Do NOT explain anything.
-
-Use EXACTLY this schema.
+Schema:
 
 {
     "questions":[
         {
             "question":"",
-
             "options":[
                 "",
                 "",
                 "",
                 ""
             ],
-
             "correctAnswer":0,
-
             "difficulty":"EASY",
-
             "topic":"",
-
             "explanation":""
         }
     ]
 }
 
-Remember:
-
 Return EXACTLY 10 questions.
-
-Return ONLY JSON.
 
 `;
 
