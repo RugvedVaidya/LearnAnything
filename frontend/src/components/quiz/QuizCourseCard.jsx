@@ -4,6 +4,10 @@ import {
 } from "lucide-react";
 
 import QuizModuleAccordion from "./QuizModuleAccordion";
+import Button from "../ui/Button";
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
 
 export default function QuizCourseCard({
 
