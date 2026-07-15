@@ -12,6 +12,7 @@ import QuizPage from "../pages/QuizPage";
 
 import QuizAttempt from "../pages/QuizAttempt";
 import QuizResult from "../pages/QuizResult";
+import CourseQuizHistory from "../pages/CourseQuizHistory";
 
 const ProtectedRoute = ({ children }) => {
 
@@ -99,13 +100,29 @@ export default function AppRoutes() {
                 />
 
                 <Route
-    path="/quiz/result/:attemptId"
-    element={
-        <ProtectedRoute>
-            <QuizResult />
-        </ProtectedRoute>
-    }
-/>
+                    path="/quiz/result/:attemptId"
+                    element={
+                        <ProtectedRoute>
+                            <QuizResult />
+                        </ProtectedRoute>
+                    }
+                />
+
+                <Route
+
+                    path="/quiz/course/:courseId"
+
+                    element={
+
+                        <ProtectedRoute>
+
+                            <CourseQuizHistory />
+
+                        </ProtectedRoute>
+
+                    }
+
+                />
             </Routes>
 
         </BrowserRouter>

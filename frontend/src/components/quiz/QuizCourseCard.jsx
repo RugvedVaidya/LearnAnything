@@ -55,6 +55,26 @@ export default function QuizCourseCard({
 
                     </button>
 
+                    <Button
+
+    variant="secondary"
+
+    onClick={() =>
+
+        navigate(
+
+            `/quiz/course/${course.id}`
+
+        )
+
+    }
+
+>
+
+    Performance
+
+</Button>
+
                 </div>
 
             </div>

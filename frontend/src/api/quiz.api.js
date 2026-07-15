@@ -29,3 +29,11 @@ export const getQuizCourses = () => {
 export const getQuiz = (quizId) => {
     return api.get(`/quizzes/${quizId}`);
 };
+
+export const getCourseQuizHistory = (courseId) => {
+
+    return api.get(
+        `/quizzes/course/${courseId}/history`
+    );
+
+};

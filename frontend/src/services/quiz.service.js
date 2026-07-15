@@ -6,6 +6,7 @@ import {
     getQuizHistory,
     getQuizAttempt,
     getQuiz,
+    getCourseQuizHistory,
 } from "../api/quiz.api";
 
 export const fetchQuizCourses = async () => {
@@ -59,6 +60,22 @@ export const fetchQuizAttempt = async (attemptId) => {
 export const fetchQuiz = async (quizId) => {
 
     const response = await getQuiz(quizId);
+
+    return response.data.data;
+
+};
+
+export const fetchCourseHistory = async (
+
+    courseId
+
+) => {
+
+    const response = await getCourseQuizHistory(
+
+        courseId
+
+    );
 
     return response.data.data;
 
