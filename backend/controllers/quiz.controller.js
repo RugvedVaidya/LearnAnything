@@ -6,6 +6,7 @@ import {
     getAttempt,
     getQuizCourses,
     getQuizById,
+    getCourseQuizHistory,
 } from "../services/quiz.service.js";
 
 import {
@@ -276,6 +277,48 @@ export const getQuiz = async (req, res) => {
     catch (error) {
 
         res.status(404).json({
+
+            success: false,
+
+            message: error.message,
+
+        });
+
+    }
+
+};
+
+export const courseQuizHistory = async (
+
+    req,
+
+    res,
+
+) => {
+
+    try {
+
+        const history = await getCourseQuizHistory(
+
+            req.user.id,
+
+            req.params.courseId
+
+        );
+
+        res.status(200).json({
+
+            success: true,
+
+            data: history,
+
+        });
+
+    }
+
+    catch (error) {
+
+        res.status(400).json({
 
             success: false,
 

@@ -569,3 +569,205 @@ export const getQuizById = async (quizId) => {
     return quiz;
 
 };
+
+export const getCourseQuizHistory = async (
+
+    userId,
+
+    courseId,
+
+) => {
+
+    const course = await prisma.course.findFirst({
+
+        where: {
+
+            id: courseId,
+
+            userId,
+
+        },
+
+        include: {
+
+            modules: {
+
+                orderBy: {
+
+                    order: "asc",
+
+                },
+
+                include: {
+
+                    chapters: {
+
+                        orderBy: {
+
+                            order: "asc",
+
+                        },
+
+                    },
+
+                },
+
+            },
+
+        },
+
+    });
+
+    if (!course) {
+
+        throw new Error("Course not found.");
+
+    }
+
+    const attempts = await prisma.quizAttempt.findMany({
+
+        where: {
+
+            userId,
+
+            quiz: {
+
+                courseId,
+
+            },
+
+        },
+
+        include: {
+
+            quiz: {
+
+                include: {
+
+                    chapter: true,
+
+                },
+
+            },
+
+        },
+
+        orderBy: {
+
+            submittedAt: "desc",
+
+        },
+
+    });
+
+    const averageScore =
+
+        attempts.length === 0
+
+            ? 0
+
+            : Math.round(
+
+                attempts.reduce(
+
+                    (sum, attempt) =>
+
+                        sum + attempt.percentage,
+
+                    0
+
+                ) / attempts.length
+
+            );
+
+    const bestScore =
+
+        attempts.length === 0
+
+            ? 0
+
+            : Math.max(
+
+                ...attempts.map(
+
+                    (attempt) => attempt.percentage
+
+                )
+
+            );
+
+    const chapters = course.modules.flatMap(
+
+        (module) =>
+
+            module.chapters.map(
+
+                (chapter) => ({
+
+                    id: chapter.id,
+
+                    title: chapter.title,
+
+                    attempts: attempts.filter(
+
+                        (attempt) =>
+
+                            attempt.quiz.chapterId === chapter.id
+
+                    ),
+
+                })
+
+            )
+
+    );
+
+    const finalAssessments = attempts.filter(
+
+        (attempt) =>
+
+            attempt.quiz.type === "COURSE"
+
+    );
+
+    return {
+
+        course: {
+
+            id: course.id,
+
+            title: course.title,
+
+        },
+
+        stats: {
+
+            attempts: attempts.length,
+
+            averageScore,
+
+            bestScore,
+
+            chapterAttempts:
+
+                attempts.filter(
+
+                    (a) =>
+
+                        a.quiz.type === "CHAPTER"
+
+                ).length,
+
+            courseAttempts:
+
+                finalAssessments.length,
+
+        },
+
+        chapters,
+
+        finalAssessments,
+
+    };
+
+};
