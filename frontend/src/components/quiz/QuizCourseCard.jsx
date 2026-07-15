@@ -1,13 +1,11 @@
 import {
     Trophy,
-    BrainCircuit,
 } from "lucide-react";
 
-import QuizModuleAccordion from "./QuizModuleAccordion";
-import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
 
-const navigate = useNavigate();
+import Button from "../ui/Button";
+import QuizModuleAccordion from "./QuizModuleAccordion";
 
 export default function QuizCourseCard({
 
@@ -18,6 +16,8 @@ export default function QuizCourseCard({
     onChapterQuiz,
 
 }) {
+
+    const navigate = useNavigate();   // ✅ Correct place
 
     return (
 
@@ -45,39 +45,43 @@ export default function QuizCourseCard({
 
                     </div>
 
-                    <button
+                    <div className="flex gap-4">
 
-                        onClick={() => onCourseQuiz(course.id)}
+                        <button
 
-                        className="px-6 py-3 rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 hover:brightness-110 transition flex items-center gap-3"
+                            onClick={() => onCourseQuiz(course.id)}
 
-                    >
+                            className="px-6 py-3 rounded-2xl bg-gradient-to-r from-violet-500 to-purple-600 hover:brightness-110 transition flex items-center gap-3"
 
-                        <Trophy size={18} />
+                        >
 
-                        Final Assessment
+                            <Trophy size={18} />
 
-                    </button>
+                            Final Assessment
 
-                    <Button
+                        </button>
 
-    variant="secondary"
+                        <Button
 
-    onClick={() =>
+                            variant="secondary"
 
-        navigate(
+                            onClick={() =>
 
-            `/quiz/course/${course.id}`
+                                navigate(
 
-        )
+                                    `/quiz/course/${course.id}`
 
-    }
+                                )
 
->
+                            }
 
-    Performance
+                        >
 
-</Button>
+                            Performance
+
+                        </Button>
+
+                    </div>
 
                 </div>
 
@@ -89,7 +93,7 @@ export default function QuizCourseCard({
 
                 {
 
-                    course.modules.map((module)=>(
+                    course.modules.map((module) => (
 
                         <QuizModuleAccordion
 
@@ -98,8 +102,11 @@ export default function QuizCourseCard({
                             module={module}
 
                             onChapterQuiz={(id) => {
+
                                 console.log("course received", id);
+
                                 onChapterQuiz(id);
+
                             }}
 
                         />

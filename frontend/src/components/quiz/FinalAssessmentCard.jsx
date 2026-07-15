@@ -1,103 +1,78 @@
-import { useNavigate } from "react-router-dom";
-import { Calendar, ArrowRight } from "lucide-react";
+import { GraduationCap } from "lucide-react";
 
-import Button from "../ui/Button";
+import AttemptRow from "./AttemptRow";
 
-export default function AttemptRow({
+export default function FinalAssessmentCard({
 
-    attempt,
+    attempts = [],
 
 }) {
 
-    const navigate = useNavigate();
-
-    const date = new Date(
-
-        attempt.submittedAt
-
-    ).toLocaleString();
-
     return (
 
-        <div className="flex items-center justify-between px-8 py-6 border-b border-[#2F2A45] last:border-b-0">
+        <section className="mt-10">
 
-            {/* Left */}
+            <div className="rounded-[28px] border border-[#2F2A45] bg-[#171827] overflow-hidden">
 
-            <div>
+                <div className="flex items-center gap-4 px-8 py-6 border-b border-[#2F2A45]">
 
-                <h3 className="text-xl font-semibold text-white">
+                    <GraduationCap
 
-                    Attempt
+                        size={24}
 
-                </h3>
+                        className="text-violet-400"
 
-                <div className="flex items-center gap-2 mt-2 text-zinc-500">
+                    />
 
-                    <Calendar size={16} />
+                    <div>
 
-                    {date}
+                        <h2 className="text-2xl font-bold text-white">
+
+                            Final Assessments
+
+                        </h2>
+
+                        <p className="text-zinc-400 mt-1">
+
+                            Your course-wide assessment attempts
+
+                        </p>
+
+                    </div>
 
                 </div>
 
-            </div>
+                {
 
-            {/* Middle */}
+                    attempts.length === 0 ? (
 
-            <div className="text-center">
+                        <div className="py-12 text-center text-zinc-500">
 
-                <p className="text-zinc-500">
+                            No Final Assessments Attempted Yet
 
-                    Score
-
-                </p>
-
-                <h3 className="text-2xl font-bold text-violet-400">
-
-                    {attempt.percentage}%
-
-                </h3>
-
-            </div>
-
-            <div className="text-center">
-
-                <p className="text-zinc-500">
-
-                    Correct
-
-                </p>
-
-                <h3 className="text-2xl font-bold text-green-400">
-
-                    {attempt.score}/{attempt.totalQuestions}
-
-                </h3>
-
-            </div>
-
-            {/* Right */}
-
-            <Button
-
-                onClick={() =>
-
-                    navigate(
-
-                        `/quiz/result/${attempt.id}`
+                        </div>
 
                     )
 
+                    :
+
+                    attempts.map((attempt) => (
+
+                        <AttemptRow
+
+                            key={attempt.id}
+
+                            attempt={attempt}
+
+                        />
+
+                    ))
+
                 }
 
-            >
+            </div>
 
-                View Review
-
-                <ArrowRight size={18} />
-
-            </Button>
-
-        </div>
+        </section>
 
     );
 

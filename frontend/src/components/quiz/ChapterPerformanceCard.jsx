@@ -32,7 +32,7 @@ export default function ChapterPerformanceCard({
                 )
 
             );
-
+console.log("Chapter Attempts:", chapter.title, attempts);
     return (
 
         <div className="rounded-[28px] border border-[#2F2A45] bg-[#171827] overflow-hidden">
