@@ -51,21 +51,9 @@ export default function Sidebar() {
                 />
 
                 <SidebarItem
-                    to="/mentor"
-                    icon={Bot}
-                    label="AI Mentor"
-                />
-
-                <SidebarItem
                     to="/quiz"
                     icon={BrainCircuit}
                     label="Quiz"
-                />
-
-                <SidebarItem
-                    to="/analytics"
-                    icon={BarChart3}
-                    label="Analytics"
                 />
 
             </div>
