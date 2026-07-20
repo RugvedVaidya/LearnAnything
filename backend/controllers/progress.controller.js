@@ -1,30 +1,26 @@
 import {
-
-    openLesson,
-
-    completeLesson,
-
-    getCourseProgress
-
+    markLessonOpened,
+    markLessonCompleted,
+    getCourseProgress,
+    getDashboardProgress,
 } from "../services/progress.service.js";
 
 import {
-
     successResponse,
-
     errorResponse,
-
 } from "../utils/apiResponse.js";
 
-import {
-    getLessonProgress,
-} from "../services/progress.service.js";
+/*
+|--------------------------------------------------------------------------
+| Mark Lesson Opened
+|--------------------------------------------------------------------------
+*/
 
-export const open = async (req, res) => {
+export const openLesson = async (req, res) => {
 
     try {
 
-        const progress = await openLesson(
+        const progress = await markLessonOpened(
 
             req.user.id,
 
@@ -46,11 +42,13 @@ export const open = async (req, res) => {
 
     catch (error) {
 
+        console.error(error);
+
         return errorResponse(
 
             res,
 
-            error.message,
+            "Failed to update lesson.",
 
             [],
 
@@ -62,11 +60,17 @@ export const open = async (req, res) => {
 
 };
 
-export const complete = async (req, res) => {
+/*
+|--------------------------------------------------------------------------
+| Mark Lesson Completed
+|--------------------------------------------------------------------------
+*/
+
+export const completeLesson = async (req, res) => {
 
     try {
 
-        const progress = await completeLesson(
+        const progress = await markLessonCompleted(
 
             req.user.id,
 
@@ -88,11 +92,13 @@ export const complete = async (req, res) => {
 
     catch (error) {
 
+        console.error(error);
+
         return errorResponse(
 
             res,
 
-            error.message,
+            "Failed to complete lesson.",
 
             [],
 
@@ -104,47 +110,11 @@ export const complete = async (req, res) => {
 
 };
 
-export const getProgress = async (req, res) => {
-
-    try {
-
-        const progress = await getLessonProgress(
-
-            req.user.id,
-
-            req.params.lessonId
-
-        );
-
-        return successResponse(
-
-            res,
-
-            "Progress fetched successfully.",
-
-            progress
-
-        );
-
-    }
-
-    catch (error) {
-
-        return errorResponse(
-
-            res,
-
-            error.message,
-
-            [],
-
-            500
-
-        );
-
-    }
-
-};
+/*
+|--------------------------------------------------------------------------
+| Course Progress
+|--------------------------------------------------------------------------
+*/
 
 export const courseProgress = async (req, res) => {
 
@@ -162,7 +132,7 @@ export const courseProgress = async (req, res) => {
 
             res,
 
-            "Course progress fetched successfully.",
+            "Course progress fetched.",
 
             progress
 
@@ -172,11 +142,61 @@ export const courseProgress = async (req, res) => {
 
     catch (error) {
 
+        console.error(error);
+
         return errorResponse(
 
             res,
 
-            error.message,
+            "Failed to fetch progress.",
+
+            [],
+
+            500
+
+        );
+
+    }
+
+};
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Progress
+|--------------------------------------------------------------------------
+*/
+
+export const dashboardProgress = async (req, res) => {
+
+    try {
+
+        const progress = await getDashboardProgress(
+
+            req.user.id
+
+        );
+
+        return successResponse(
+
+            res,
+
+            "Dashboard progress fetched.",
+
+            progress
+
+        );
+
+    }
+
+    catch (error) {
+
+        console.error(error);
+
+        return errorResponse(
+
+            res,
+
+            "Failed to fetch dashboard progress.",
 
             [],
 

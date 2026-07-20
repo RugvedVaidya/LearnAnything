@@ -1,28 +1,59 @@
 import express from "express";
 
-import {
-
-    protect,
-
-} from "../middleware/auth.middleware.js";
+import { protect } from "../middleware/auth.middleware.js";
 
 import {
-    open,
-    complete,
-    getProgress,
-    courseProgress
+
+    openLesson,
+
+    completeLesson,
+
+    courseProgress,
+
+    dashboardProgress,
+
 } from "../controllers/progress.controller.js";
 
 const router = express.Router();
 
-router.use(protect);
+router.post(
 
-router.post("/open/:lessonId", open);
+    "/lesson/:lessonId/open",
 
-router.post("/complete/:lessonId", complete);
+    protect,
 
-router.get("/:lessonId", getProgress);
+    openLesson
 
-router.get("/course/:courseId", courseProgress);
+);
+
+router.post(
+
+    "/lesson/:lessonId/complete",
+
+    protect,
+
+    completeLesson
+
+);
+
+router.get(
+
+    "/course/:courseId",
+
+    protect,
+
+    courseProgress
+
+);
+
+router.get(
+
+    "/dashboard",
+
+    protect,
+
+    dashboardProgress
+
+);
 
 export default router;

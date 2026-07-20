@@ -1,8 +1,14 @@
 import prisma from "../config/prisma.js";
 
-export const openLesson = async (userId, lessonId) => {
+/*
+|--------------------------------------------------------------------------
+| Mark Lesson Opened
+|--------------------------------------------------------------------------
+*/
 
-    const progress = await prisma.lessonProgress.upsert({
+export const markLessonOpened = async (userId, lessonId) => {
+
+    return await prisma.lessonProgress.upsert({
 
         where: {
 
@@ -34,13 +40,23 @@ export const openLesson = async (userId, lessonId) => {
 
     });
 
-    return progress;
-
 };
 
-export const completeLesson = async (userId, lessonId) => {
+/*
+|--------------------------------------------------------------------------
+| Mark Lesson Completed
+|--------------------------------------------------------------------------
+*/
 
-    const progress = await prisma.lessonProgress.upsert({
+export const markLessonCompleted = async (
+
+    userId,
+
+    lessonId
+
+) => {
+
+    return await prisma.lessonProgress.upsert({
 
         where: {
 
@@ -60,8 +76,6 @@ export const completeLesson = async (userId, lessonId) => {
 
             completedAt: new Date(),
 
-            lastOpenedAt: new Date(),
-
         },
 
         create: {
@@ -74,95 +88,35 @@ export const completeLesson = async (userId, lessonId) => {
 
             completedAt: new Date(),
 
-            lastOpenedAt: new Date(),
-
-        },
-
-    });
-
-    return progress;
-
-};
-
-export const getLessonProgress = async (userId, lessonId) => {
-
-    return await prisma.lessonProgress.findUnique({
-
-        where: {
-
-            userId_lessonId: {
-
-                userId,
-
-                lessonId,
-
-            },
-
         },
 
     });
 
 };
 
-export const getCourseProgress = async (userId, courseId) => {
+/*
+|--------------------------------------------------------------------------
+| Course Progress
+|--------------------------------------------------------------------------
+*/
 
-    const course = await prisma.course.findUnique({
+export const getCourseProgress = async (
+
+    userId,
+
+    courseId
+
+) => {
+
+    const lessons = await prisma.lesson.findMany({
 
         where: {
 
-            id: courseId,
+            chapter: {
 
-        },
+                module: {
 
-        include: {
-
-            modules: {
-
-                orderBy: {
-
-                    order: "asc",
-
-                },
-
-                include: {
-
-                    chapters: {
-
-                        orderBy: {
-
-                            order: "asc",
-
-                        },
-
-                        include: {
-
-                            lessons: {
-
-                                orderBy: {
-
-                                    order: "asc",
-
-                                },
-
-                                include: {
-
-                                    progress: {
-
-                                        where: {
-
-                                            userId,
-
-                                        },
-
-                                    },
-
-                                },
-
-                            },
-
-                        },
-
-                    },
+                    courseId,
 
                 },
 
@@ -170,102 +124,122 @@ export const getCourseProgress = async (userId, courseId) => {
 
         },
 
-    });
+        select: {
 
-    if (!course) {
+            id: true,
 
-        throw new Error("Course not found.");
-
-    }
-
-    const lessons = [];
-
-    course.modules.forEach((module) => {
-
-        module.chapters.forEach((chapter) => {
-
-            chapter.lessons.forEach((lesson) => {
-
-                lessons.push({
-
-                    ...lesson,
-
-                    module,
-
-                    chapter,
-
-                });
-
-            });
-
-        });
+        },
 
     });
 
     const totalLessons = lessons.length;
 
-    const completedLessons = lessons.filter(
-
-        lesson =>
-
-            lesson.progress.length > 0 &&
-
-            lesson.progress[0].completed
-
-    ).length;
-
-    const currentLesson =
-
-        lessons.find(
-
-            lesson =>
-
-                lesson.progress.length === 0 ||
-
-                !lesson.progress[0].completed
-
-        ) || null;
-
-    const percentage =
-
-        totalLessons === 0
-
-            ? 0
-
-            : Math.round(
-
-                (completedLessons / totalLessons) * 100
-
-            );
-
-    const lessonStatuses = lessons.map((lesson) => {
-
-        const progress = lesson.progress[0];
+    if (totalLessons === 0) {
 
         return {
 
-            id: lesson.id,
+            completedLessons: 0,
 
-            completed: progress?.completed || false,
+            totalLessons: 0,
 
-            current: currentLesson ? currentLesson.id === lesson.id : false,
+            percentage: 0,
 
         };
+
+    }
+
+    const lessonIds = lessons.map(
+
+        (lesson) => lesson.id
+
+    );
+
+    const completedLessons = await prisma.lessonProgress.count({
+
+        where: {
+
+            userId,
+
+            lessonId: {
+
+                in: lessonIds,
+
+            },
+
+            completed: true,
+
+        },
 
     });
 
     return {
 
-        totalLessons,
-
         completedLessons,
 
-        percentage,
+        totalLessons,
 
-        currentLesson,
+        percentage: Math.round(
 
-        lessonStatuses,
+            (completedLessons / totalLessons) * 100
+
+        ),
 
     };
+
+};
+
+/*
+|--------------------------------------------------------------------------
+| Dashboard Progress
+|--------------------------------------------------------------------------
+*/
+
+export const getDashboardProgress = async (
+
+    userId
+
+) => {
+
+    const courses = await prisma.course.findMany({
+
+        where: {
+
+            userId,
+
+        },
+
+        select: {
+
+            id: true,
+
+            title: true,
+
+        },
+
+    });
+
+    const result = [];
+
+    for (const course of courses) {
+
+        const progress = await getCourseProgress(
+
+            userId,
+
+            course.id
+
+        );
+
+        result.push({
+
+            ...course,
+
+            progress,
+
+        });
+
+    }
+
+    return result;
 
 };

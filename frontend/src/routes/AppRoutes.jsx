@@ -14,6 +14,8 @@ import QuizAttempt from "../pages/QuizAttempt";
 import QuizResult from "../pages/QuizResult";
 import CourseQuizHistory from "../pages/CourseQuizHistory";
 
+import MyLearningPage from "../pages/MyLearningPage";
+
 const ProtectedRoute = ({ children }) => {
 
     const { user, loading } = useAuth();
@@ -79,11 +81,6 @@ export default function AppRoutes() {
                 />
 
                 <Route
-                    path="*"
-                    element={<Navigate to="/" replace />}
-                />
-
-                <Route
                     path="/quiz"
                     element={
                     <ProtectedRoute>
@@ -123,6 +120,24 @@ export default function AppRoutes() {
                     }
 
                 />
+
+                <Route
+
+                    path="/my-learning"
+
+                    element={
+                        <ProtectedRoute>
+                        <MyLearningPage />
+                        </ProtectedRoute>
+                    }
+
+                />
+
+                <Route
+                    path="*"
+                    element={<Navigate to="/" replace />}
+                />
+                
             </Routes>
 
         </BrowserRouter>
