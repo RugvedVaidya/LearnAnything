@@ -23,7 +23,6 @@ An AI-powered personalized learning platform that generates structured learning 
 ### Dashboard
 - Personalized dashboard
 - Total courses created
-- Learning statistics
 - Progress overview
 - Recent activity
 
@@ -283,7 +282,7 @@ GET /api/v1/progress/:courseId
 
 ## Planned Features
 
-- AI Mentor
+- Common AI Mentor
 - Learning Analytics
 - RAG-based Knowledge Retrieval
 - PDF Upload & Chat
@@ -295,27 +294,9 @@ GET /api/v1/progress/:courseId
 
 ---
 
-# Screenshots
-
-Add screenshots after deployment.
-
-```
-Dashboard
-
-My Learning
-
-Course Details
-
-AI Course Generator
-
-Authentication
-```
-
----
-
 # Future Improvements
 
-- AI Mentor
+- Common AI Mentor
 - Vector Database Integration
 - RAG Pipeline
 - PDF Learning
